@@ -166,59 +166,66 @@ function onEachCounty(feature, layer) {
   }
 
   // Legend component nested so it can read breaks and getColor
-  function Legend() {
+ function Legend() {
   const map = useMap();
 
   useEffect(() => {
+    if (!map) return;
+
     const legend = L.control({ position: "bottomright" });
 
     legend.onAdd = function () {
       const div = L.DomUtil.create("div", "legend-leaflet");
 
-      // --- Larger container for readability ---
+      // Container styling (slightly larger, very readable)
       div.style.background = "white";
-      div.style.padding = "16px 20px";
-      div.style.borderRadius = "14px";
-      div.style.boxShadow = "0 0 15px rgba(0,0,0,0.3)";
-      div.style.fontSize = "14px";
-      div.style.lineHeight = "20px";
-      div.style.color = "#222";
-      div.style.width = "220px";
-      div.style.maxWidth = "250px";
+      div.style.padding = "18px 22px";
+      div.style.borderRadius = "16px";
+      div.style.boxShadow = "0 0 18px rgba(0,0,0,0.35)";
+      div.style.fontSize = "15px";
+      div.style.lineHeight = "22px";
+      div.style.border = "1px solid #cbd5e1";
+      div.style.color = "#111827";
+      div.style.marginBottom = "10px"; // keep it a bit above the map edge
 
       // --- Title ---
       const title = document.createElement("div");
       title.style.fontWeight = "700";
       title.style.marginBottom = "10px";
-      title.style.fontSize = "15px";
-      title.textContent = "Housing Shortage (units)";
+      title.style.fontSize = "16px";
+      title.style.letterSpacing = "0.02em";
+      title.textContent = "2029 housing shortage (units)";
       div.appendChild(title);
 
-      // --- Threshold-based swatches ---
+      // --- Threshold-based swatches (same breaks as getColor) ---
       const thresholds = [0, 5000, 10000, 15000, 30000, 100000];
+
       thresholds.forEach((from, i) => {
         const to = thresholds[i + 1];
-        const color = getColor((from + (to || from)) / 2);
+        const midValue = to ? (from + to) / 2 : from + 1;
+        const color = getColor(midValue);
         const rangeLabel = to
           ? `${from.toLocaleString()} – ${to.toLocaleString()}`
-          : `${from.toLocaleString()} +`;
+          : `${from.toLocaleString()}+`;
 
         const row = document.createElement("div");
         row.style.display = "flex";
         row.style.alignItems = "center";
         row.style.marginBottom = "6px";
 
-        const sw = document.createElement("span");
-        sw.style.width = "22px";
-        sw.style.height = "14px";
-        sw.style.background = color;
-        sw.style.display = "inline-block";
-        sw.style.marginRight = "10px";
-        sw.style.border = "1px solid #999";
-        row.appendChild(sw);
+        const swatch = document.createElement("span");
+        swatch.style.width = "26px";   // slightly bigger
+        swatch.style.height = "16px";  // slightly taller
+        swatch.style.background = color;
+        swatch.style.display = "inline-block";
+        swatch.style.marginRight = "10px";
+        swatch.style.border = "1px solid #9ca3af";
+        row.appendChild(swatch);
 
-        const t = document.createTextNode(rangeLabel);
-        row.appendChild(t);
+        const label = document.createElement("span");
+        label.textContent = rangeLabel;
+        row.appendChild(label);
+
         div.appendChild(row);
       });
 
@@ -226,21 +233,22 @@ function onEachCounty(feature, layer) {
       const note = document.createElement("div");
       note.style.marginTop = "10px";
       note.style.fontSize = "11px";
-      note.style.color = "#555";
-      note.textContent = "Click or hover for details";
+      note.style.color = "#4b5563";
+      note.textContent = "Data: Bowen National Research for the NC Chamber";
       div.appendChild(note);
 
       return div;
     };
 
     legend.addTo(map);
-    return () => legend.remove();
+
+    return () => {
+      legend.remove();
+    };
   }, [map]);
 
   return null;
 }
-
-
 
   return (
     <MapContainer

@@ -151,15 +151,18 @@ body {
   box-shadow: none;
 }
 
-/* Main content area: fills viewport minus header/footer */
+/* Main content area: fills the space between header and footer with no page scroll */
 .main-content {
-  padding-top: var(--header-height);
-  padding-bottom: var(--footer-height);
-  height: 100vh;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  bottom: var(--footer-height);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding: 8px 0 8px; /* small breathing room above/below about panel & map */
 }
 
 /* About panel that overlays above the map */
