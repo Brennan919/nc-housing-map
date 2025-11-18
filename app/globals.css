@@ -19,6 +19,14 @@
   }
 }
 
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* prevents the extra page scrollbar */
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -58,26 +66,25 @@ body {
   --color-surface-muted: #f3f4f6;
   --color-border-subtle: #e5e7eb;
   --color-header: #020617;
-  --color-header-accent: #38bdf8; /* cyan accent */
+  --color-header-accent: #38bdf8;
   --color-text-main: #0f172a;
   --color-text-muted: #6b7280;
 }
 
-/* Overall page shell */
+/* Overall page shell: header / main / footer grid */
 .page-shell {
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
+  display: grid;
+  grid-template-rows: var(--header-height) 1fr var(--footer-height);
   background: radial-gradient(circle at top, #0f172a, #020617 60%);
   color: var(--color-text-main);
 }
 
-/* Fixed header */
+/* Header now lives in the first grid row (no fixed positioning) */
 .site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--header-height);
-  z-index: 1000;
+  grid-row: 1;
+  /* no position: fixed here */
   background: linear-gradient(
     135deg,
     rgba(15, 23, 42, 0.98),
@@ -151,24 +158,21 @@ body {
   box-shadow: none;
 }
 
-/* Main content area: fills the space between header and footer with no page scroll */
+/* Main content lives entirely in the middle grid row */
 .main-content {
-  position: fixed;
-  top: var(--header-height);
-  left: 0;
-  right: 0;
-  bottom: var(--footer-height);
-  box-sizing: border-box;
+  grid-row: 2;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 8px 0 8px; /* small breathing room above/below about panel & map */
+  padding: 8px 0;
+  box-sizing: border-box;
+  overflow: hidden; /* important: map + about must stay within this row */
 }
 
-/* About panel that overlays above the map */
+/* About panel at the top of the main content */
 .about-panel {
   max-width: 900px;
-  margin: 10px auto 0;
+  margin: 4px auto 0;
   padding: 14px 16px 12px;
   background: rgba(248, 250, 252, 0.97);
   border-radius: 16px;
@@ -192,13 +196,13 @@ body {
   color: var(--color-text-muted);
 }
 
-/* Map wrapper fills the remaining space */
+/* Map wrapper fills the remaining height in the middle row */
 .page-map-wrapper {
   flex: 1;
   min-height: 0;
 }
 
-/* Make the Leaflet map fill the available space */
+/* Leaflet map always fills the map wrapper */
 .page-map-wrapper .leaflet-container {
   height: 100%;
   width: 100%;
@@ -207,14 +211,10 @@ body {
   border: 1px solid rgba(148, 163, 184, 0.45);
 }
 
-/* Fixed footer at bottom */
+/* Footer in the last grid row, not fixed */
 .site-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: var(--footer-height);
-  z-index: 1000;
+  grid-row: 3;
+  /* no position: fixed here */
   background: radial-gradient(
     circle at top,
     rgba(15, 23, 42, 0.96),
@@ -246,7 +246,7 @@ body {
   text-decoration-thickness: 2px;
 }
 
-/* Basic responsive tweaks */
+/* Responsive tweaks */
 @media (max-width: 640px) {
   :root {
     --header-height: 96px;
