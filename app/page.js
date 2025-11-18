@@ -43,7 +43,7 @@ export default function Home() {
               interactive, county-level map of North Carolina&rsquo;s housing
               shortage. It visualizes the state&apos;s housing supply gap in
               2029, based on research conducted by Bowen National Research for
-              the NC Chamber.
+              the NC Chamber. It was created by Brien Brennan.
             </p>
           </section>
         )}
