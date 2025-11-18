@@ -189,12 +189,14 @@ function onEachCounty(feature, layer) {
       div.style.marginBottom = "10px"; // keep it a bit above the map edge
 
       // --- Title ---
-      const title = document.createElement("div");
-      title.style.fontWeight = "700";
-      title.style.marginBottom = "10px";
-      title.style.fontSize = "16px";
-      title.style.letterSpacing = "0.02em";
-      title.textContent = "2029 housing shortage (units)";
+const title = document.createElement("div");
+title.style.fontWeight = "700";
+title.style.marginBottom = "10px";
+title.style.fontSize = "16px";
+title.textContent = "2029 housing shortage (units)";
+div.appendChild(title);
+
+
       div.appendChild(title);
 
       // --- Threshold-based swatches (same breaks as getColor) ---

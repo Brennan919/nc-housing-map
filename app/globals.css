@@ -275,3 +275,16 @@ body {
     font-size: 0.78rem;
   }
 }
+
+/* Keep Leaflet legend fully visible above the footer */
+.leaflet-bottom.leaflet-right {
+  /* Move all bottom-right Leaflet controls up so they clear the fixed footer */
+  bottom: 80px; /* adjust if your footer is taller/shorter */
+}
+
+/* Optional: tiny extra polish for the legend box itself */
+.legend-leaflet {
+  z-index: 500;           /* keep it above the map tiles */
+  pointer-events: auto;
+}
+
