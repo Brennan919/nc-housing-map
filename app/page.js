@@ -15,7 +15,7 @@ export default function Home() {
         <div className="site-header-inner">
           <div className="site-title-block">
             <h1 className="site-title">
-              North Carolina Housing Shortage Map
+              North Carolina Housing Shortage Map by Brien Brennan
             </h1>
             <p className="site-subtitle">
               County-by-county visualization of the 2029 housing supply gap
