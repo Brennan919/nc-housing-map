@@ -288,3 +288,13 @@ body {
   pointer-events: auto;
 }
 
+/* Nudge Leaflet controls away from the extreme edges */
+.leaflet-top.leaflet-right {
+  margin-top: 16px;
+  margin-right: 16px;
+}
+
+/* Ensure custom legend is always above map tiles */
+.legend-leaflet {
+  z-index: 500;
+}

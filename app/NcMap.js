@@ -170,31 +170,31 @@ function onEachCounty(feature, layer) {
   const map = useMap();
 
   useEffect(() => {
-    if (!map) return;
-
-    const legend = L.control({ position: "bottomright" });
+    // Move legend to TOP-RIGHT instead of bottom-right
+    const legend = L.control({ position: "topright" });
 
     legend.onAdd = function () {
       const div = L.DomUtil.create("div", "legend-leaflet");
 
-      // Container styling (slightly larger, very readable)
+      // --- Larger container for readability ---
       div.style.background = "white";
-      div.style.padding = "18px 22px";
-      div.style.borderRadius = "16px";
-      div.style.boxShadow = "0 0 18px rgba(0,0,0,0.35)";
-      div.style.fontSize = "15px";
-      div.style.lineHeight = "22px";
-      div.style.border = "1px solid #cbd5e1";
-      div.style.color = "#111827";
-      div.style.marginBottom = "10px"; // keep it a bit above the map edge
+      div.style.padding = "16px 20px";
+      div.style.borderRadius = "14px";
+      div.style.boxShadow = "0 0 15px rgba(0,0,0,0.3)";
+      div.style.fontSize = "14px";
+      div.style.lineHeight = "20px";
+      div.style.color = "#222";
+      div.style.width = "230px";
+      div.style.maxWidth = "280px";
 
       // --- Title ---
-const title = document.createElement("div");
-title.style.fontWeight = "700";
-title.style.marginBottom = "10px";
-title.style.fontSize = "16px";
-title.textContent = "2029 housing shortage (units)";
-div.appendChild(title);
+      const title = document.createElement("div");
+      title.style.fontWeight = "700";
+      title.style.marginBottom = "10px";
+      title.style.fontSize = "16px";
+      title.textContent = "2029 housing shortage (units)";
+      div.appendChild(title);
+
 
 
       div.appendChild(title);
