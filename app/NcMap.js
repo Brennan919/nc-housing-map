@@ -1,5 +1,7 @@
 "use client";
 
+console.log("NcMap VERSION 7 loaded");
+
 import { MapContainer, GeoJSON, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
