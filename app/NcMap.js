@@ -3,7 +3,7 @@
 import { MapContainer, GeoJSON, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import React, { useState, useMemo, useEffect, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import ncCounties from "./nc-counties-merged.json";
 
 // ---- Lens configuration ----
@@ -364,6 +364,34 @@ function buildPopupHTML(lensId, properties) {
   `;
 }
 
+// ---------- Fit map to North Carolina bounds ----------
+
+function FitBoundsToNC() {
+  const map = useMap();
+
+  useEffect(() => {
+    try {
+      if (!map) return;
+      if (!ncCounties || typeof ncCounties !== "object") return;
+
+      const layer = L.geoJSON(ncCounties);
+      const bounds = layer.getBounds();
+
+      if (bounds && bounds.isValid && bounds.isValid()) {
+        // Extra padding on bottom-right to push NC slightly up and left
+        map.fitBounds(bounds, {
+          paddingTopLeft: [10, 10],
+          paddingBottomRight: [120, 140],
+        });
+      }
+    } catch (error) {
+      console.error("FitBoundsToNC error:", error);
+    }
+  }, [map]);
+
+  return null;
+}
+
 
 // ---------- Legend control ----------
 
@@ -499,33 +527,6 @@ function LensSelector({ activeLensId, setActiveLensId }) {
   );
 }
 
-// Fit the map view to the North Carolina counties on first render
-function FitBoundsToNC() {
-  const map = useMap();
-
-  useEffect(() => {
-    try {
-      if (!map) return;
-      if (!ncCounties || typeof ncCounties !== "object") return;
-
-      const layer = L.geoJSON(ncCounties);
-      const bounds = layer.getBounds();
-
-      if (bounds && bounds.isValid && bounds.isValid()) {
-        map.fitBounds(bounds, {
-          paddingTopLeft: [10, 10],
-          paddingBottomRight: [120, 140]
-        });
-      }
-    } catch (err) {
-      console.error("FitBoundsToNC error:", err);
-    }
-  }, [map]);
-
-  return null;
-}
-
-
 
 
 // ---------- NcMap main component ----------
@@ -547,8 +548,12 @@ export default function NcMap() {
     const quantile = (p) =>
       sorted[Math.floor(p * (sorted.length - 1))];
 
-    // 4 quantiles → 5 color classes
-    return [0.2, 0.4, 0.6, 0.8].map(quantile);
+    return [
+      quantile(0.2),
+      quantile(0.4),
+      quantile(0.6),
+      quantile(0.8),
+    ];
   }, [values]);
 
   function style(feature) {
@@ -563,68 +568,71 @@ export default function NcMap() {
     };
   }
 
-  function NcMap() {
-  const [activeLensId, setActiveLensId] = useState("overview");
-
-  // ... your other hooks & helpers (getValueForLens, style, etc.)
-
+  // ✅ Make sure onEachCounty is defined and in scope
   const onEachCounty = useCallback(
-  (feature, layer) => {
-    try {
-      const props = feature?.properties ?? {};
-      const html = buildPopupHTML(activeLensId, props);
+    (feature, layer) => {
+      try {
+        const props = feature?.properties ?? {};
+        const html = buildPopupHTML(activeLensId, props);
 
-      layer.bindPopup(html, {
-        maxWidth: 320,
-        closeButton: true,
-        className: "custom-popup",
-      });
+        layer.bindPopup(html, {
+          maxWidth: 320,
+          closeButton: true,
+          className: "custom-popup",
+        });
 
-      layer.on({
-        mouseover: (e) => {
-          e.target.setStyle({ weight: 2, color: "#000" });
-        },
-        mouseout: (e) => {
-          e.target.setStyle({ weight: 1.2, color: "#000" });
-        },
-      });
-    } catch (err) {
-      console.error("Popup error:", err, feature);
-    }
-  },
-  [activeLensId]
-);
+        layer.on({
+          mouseover: (e) => {
+            const target = e.target;
+            target.setStyle({
+              weight: 2,
+              color: "#000000", // thicker border on hover
+            });
+            if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+              target.bringToFront();
+            }
+          },
+          mouseout: (e) => {
+            const target = e.target;
+            target.setStyle({
+              weight: 1.2,
+              color: "#000000",
+            });
+          },
+        });
+      } catch (error) {
+        console.error("Popup error:", error, feature);
+      }
+    },
+    [activeLensId]
+  );
 
+  return (
+    <div className="map-root">
+      <MapContainer
+        center={[35.7596, -79.0193]}  // fallback; FitBoundsToNC will override
+        zoom={6}
+        style={{ height: "100%", width: "100%" }}
+        zoomControl={true}
+      >
+        {/* Auto-fit NC, slightly up and left */}
+        <FitBoundsToNC />
 
-  // ...
-}
+        <GeoJSON
+          key={activeLensId}          // 🔁 re-create layer when lens changes
+          data={ncCounties}
+          style={style}
+          onEachFeature={onEachCounty}
+        />
 
+        <Legend activeLensId={activeLensId} breaks={breaks} />
+      </MapContainer>
 
- return (
-  <div className="map-root">
-    <MapContainer
-      center={[35.7596, -79.0193]} // fallback; FitBoundsToNC will override
-      zoom={6}
-      style={{ height: "100%", width: "100%" }}
-      zoomControl={true}
-    >
-      <FitBoundsToNC />
-
-      <GeoJSON
-        key={activeLensId}        // <— forces layer + popups to be recreated
-        data={ncCounties}
-        style={style}
-        onEachFeature={onEachCounty}
+      <LensSelector
+        activeLensId={activeLensId}
+        setActiveLensId={setActiveLensId}
       />
-
-      <Legend activeLensId={activeLensId} breaks={breaks} />
-    </MapContainer>
-
-    <LensSelector
-      activeLensId={activeLensId}
-      setActiveLensId={setActiveLensId}
-    />
-  </div>
-);
-
+    </div>
+  );
 }
+
