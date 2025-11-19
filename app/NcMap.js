@@ -3,7 +3,7 @@
 import { MapContainer, GeoJSON, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { useEffect, useMemo, useState } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import ncCounties from "./nc-counties-merged.json";
 
 // ---- Lens configuration ----
@@ -506,19 +506,21 @@ function FitBoundsToNC() {
   useEffect(() => {
     if (!map) return;
 
-    // Build a temporary GeoJSON layer just to compute bounds
     const layer = L.geoJSON(ncCounties);
     const bounds = layer.getBounds();
 
     if (bounds && bounds.isValid && bounds.isValid()) {
       map.fitBounds(bounds, {
-        padding: [20, 20], // add a little space around the state
+        // Extra space on bottom-right to visually push NC up and left
+        paddingTopLeft: [10, 10],
+        paddingBottomRight: [120, 140],
       });
     }
   }, [map]);
 
   return null;
 }
+
 
 
 // ---------- NcMap main component ----------
@@ -556,49 +558,59 @@ export default function NcMap() {
     };
   }
 
-  function onEachCounty(feature, layer) {
-  const html = buildPopupHTML(activeLensId, feature.properties || {});
-  layer.bindPopup(html, {
-    maxWidth: 320,
-    closeButton: true,
-    className: "custom-popup",
-  });
+  function NcMap() {
+  const [activeLensId, setActiveLensId] = useState("overview");
 
-  layer.on({
-    mouseover: (e) => {
-      const target = e.target;
-      target.setStyle({
-        weight: 2,
-        color: "#000000", // thicker border on hover
+  // ... your other hooks & helpers (getValueForLens, style, etc.)
+
+  const onEachCounty = useCallback(
+    (feature, layer) => {
+      const html = buildPopupHTML(activeLensId, feature.properties || {});
+      layer.bindPopup(html, {
+        maxWidth: 320,
+        closeButton: true,
+        className: "custom-popup",
       });
-      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        target.bringToFront();
-      }
-    },
-    mouseout: (e) => {
-      const target = e.target;
-      // Reset only the stroke style, do NOT touch fillColor
-      target.setStyle({
-        weight: 1.2,
-        color: "#000000",
+
+      layer.on({
+        mouseover: (e) => {
+          const target = e.target;
+          target.setStyle({
+            weight: 2,
+            color: "#000000",
+          });
+          if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            target.bringToFront();
+          }
+        },
+        mouseout: (e) => {
+          const target = e.target;
+          target.setStyle({
+            weight: 1.2,
+            color: "#000000",
+          });
+        },
       });
     },
-  });
+    [activeLensId] // <— key part: re-create handler when lens changes
+  );
+
+  // ...
 }
 
 
  return (
   <div className="map-root">
     <MapContainer
-      center={[35.7596, -79.0193]}      // fallback, will be overridden by fitBounds
-      zoom={6}                           // fallback
+      center={[35.7596, -79.0193]} // fallback; FitBoundsToNC will override
+      zoom={6}
       style={{ height: "100%", width: "100%" }}
       zoomControl={true}
     >
-      {/* NEW: ensure NC fills the map on initial load */}
       <FitBoundsToNC />
 
       <GeoJSON
+        key={activeLensId}        // <— forces layer + popups to be recreated
         data={ncCounties}
         style={style}
         onEachFeature={onEachCounty}
@@ -613,4 +625,5 @@ export default function NcMap() {
     />
   </div>
 );
+
 }
