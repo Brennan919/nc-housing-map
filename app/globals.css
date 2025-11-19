@@ -330,14 +330,97 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.lens-title {
-  font-size: 0.85rem;
+/* Lens card container: you can keep your existing position + size rules */
+.lens-card-title,
+.lens-card-title {
+  font-size: 0.78rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #4f6b8c;
-  margin-bottom: 0.3rem;
+  letter-spacing: 0.08em;
+  color: #4b5563;
+  margin-bottom: 0.4rem;
 }
+
+.lens-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lens-option {
+  border: none;
+  background: transparent;
+  padding: 4px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 0.86rem;
+  color: #4b5563;
+  text-align: left;
+}
+
+.lens-option:hover {
+  color: #111827;
+}
+
+.lens-option-active {
+  font-weight: 600;
+}
+
+/* Base dot style */
+.lens-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  margin-right: 8px;
+  border-width: 2px;
+  border-style: solid;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+/* Palette-specific dot outlines (match the choropleth palettes) */
+.lens-dot-overview {
+  border-color: #fb923c; /* orange */
+}
+
+.lens-dot-per_capita {
+  border-color: #2563eb; /* blue */
+}
+
+.lens-dot-affordable_rental {
+  border-color: #8b5cf6; /* purple */
+}
+
+.lens-dot-rental_backlog {
+  border-color: #22c55e; /* green */
+}
+
+.lens-dot-forsale_backlog {
+  border-color: #ec4899; /* pink/red */
+}
+
+/* Fill the circle when active */
+.lens-dot-active.lens-dot-overview {
+  background: #fb923c;
+}
+
+.lens-dot-active.lens-dot-per_capita {
+  background: #2563eb;
+}
+
+.lens-dot-active.lens-dot-affordable_rental {
+  background: #8b5cf6;
+}
+
+.lens-dot-active.lens-dot-rental_backlog {
+  background: #22c55e;
+}
+
+.lens-dot-active.lens-dot-forsale_backlog {
+  background: #ec4899;
+}
+
 
 .lens-select {
   width: 100%;

@@ -129,12 +129,52 @@ function getMetricValue(feature, lensId) {
 
 // ---------- Color scale helpers ----------
 
-function getColorForValue(value, breaks) {
-  const v = Number(value);
-  if (!Number.isFinite(v)) return "#FFEDA0";
+// Pick a color from the right palette for each lens + class index 0–4
+function getPaletteColor(lensId, classIndex) {
+  // default palette (same as your current overview)
+  const overviewPalette = ["#FFEDA0", "#FD8D3C", "#E31A1C", "#BD0026", "#800026"];
 
-  if (!breaks || breaks.length === 0) {
-    return "#FED976";
+  const perCapitaPalette = ["#eff6ff", "#bfdbfe", "#60a5fa", "#2563eb", "#1d4ed8"]; // blues
+  const affordableRentalPalette = [
+    "#f5f3ff",
+    "#e9d5ff",
+    "#c4b5fd",
+    "#8b5cf6",
+    "#6d28d9",
+  ]; // purples
+  const rentalBacklogPalette = [
+    "#ecfdf3",
+    "#bbf7d0",
+    "#4ade80",
+    "#22c55e",
+    "#15803d",
+  ]; // greens
+  const forSaleBacklogPalette = [
+    "#fdf2f8",
+    "#f9a8d4",
+    "#f472b6",
+    "#ec4899",
+    "#be185d",
+  ]; // pink/red
+
+  const palettes = {
+    overview: overviewPalette,
+    per_capita: perCapitaPalette,
+    affordable_rental: affordableRentalPalette,
+    rental_backlog: rentalBacklogPalette,
+    forsale_backlog: forSaleBacklogPalette,
+  };
+
+  const palette = palettes[lensId] || overviewPalette;
+  const idx = Math.max(0, Math.min(classIndex, palette.length - 1));
+  return palette[idx];
+}
+
+function getColorForValue(value, breaks, lensId) {
+  const v = Number(value);
+  if (!Number.isFinite(v) || !breaks || !breaks.length) {
+    // light neutral if no data
+    return getPaletteColor(lensId, 0);
   }
 
   const [b1, b2, b3, b4] = [
@@ -144,12 +184,17 @@ function getColorForValue(value, breaks) {
     breaks[3] ?? breaks[2] ?? breaks[1] ?? breaks[0],
   ];
 
-  if (v > b4) return "#800026"; // darkest
-  if (v > b3) return "#BD0026";
-  if (v > b2) return "#E31A1C";
-  if (v > b1) return "#FD8D3C";
-  return "#FFEDA0"; // lightest
+  // Decide which “class” this value belongs to
+  let classIndex = 0;
+  if (v > b4) classIndex = 4;
+  else if (v > b3) classIndex = 3;
+  else if (v > b2) classIndex = 2;
+  else if (v > b1) classIndex = 1;
+  else classIndex = 0;
+
+  return getPaletteColor(lensId, classIndex);
 }
+
 
 function formatLegendValue(value, lensId) {
   if (!Number.isFinite(value)) return "n/a";
@@ -363,7 +408,8 @@ function Legend({ activeLensId, breaks }) {
       classes.forEach((cls) => {
         const midValue =
           cls.to == null ? cls.from + 1 : (cls.from + cls.to) / 2;
-        const color = getColorForValue(midValue, breaksToUse);
+        const color = getColorForValue(midValue, breaksToUse, activeLensId);
+
 
         const row = document.createElement("div");
         row.style.display = "flex";
@@ -419,7 +465,7 @@ function LensSelector({ activeLensId, setActiveLensId }) {
               onClick={() => setActiveLensId(id)}
             >
               <span
-                className={`lens-dot${
+                className={`lens-dot lens-dot-${id}${
                   isActive ? " lens-dot-active" : ""
                 }`}
                 aria-hidden="true"
@@ -459,7 +505,7 @@ export default function NcMap() {
   function style(feature) {
     const v = getMetricValue(feature, activeLensId);
     return {
-      fillColor: getColorForValue(v, breaks),
+      fillColor: getColorForValue(v, breaks, activeLensId),
       weight: 1,
       opacity: 1,
       color: "#ffffff",
