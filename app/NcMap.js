@@ -223,6 +223,8 @@ function buildPopupHTML(lensId, properties) {
 
   const lines = [];
 
+  // 1) Housing Shortage Overview lens
+  //    shows: pop2029, housing_shortage, housing_gap_rentals, housing_gap_for_sale
   if (lensId === "overview") {
     const shortage = numberOrZero(p.housing_shortage);
     const pop2029 = numberOrZero(p.pop2029);
@@ -249,6 +251,9 @@ function buildPopupHTML(lensId, properties) {
       label: "For-sale housing shortage (units)",
       value: formatInt(forsaleGap),
     });
+
+  // 2) Housing Shortage per Capita lens
+  //    shows: pop2029, shortage_per_1000_2029, shortage_per_1000_household_2029
   } else if (lensId === "per_capita") {
     const pop2029 = numberOrZero(p.pop2029);
     const per1000People = safeNumber(p.shortage_per_1000_2029);
@@ -269,6 +274,9 @@ function buildPopupHTML(lensId, properties) {
       label: "Shortage per 1,000 households (2029)",
       value: formatPerThousand(per1000Households),
     });
+
+  // 3) Affordable Rental Unit Shortage lens
+  //    shows: housing_gap_rentals, percent_rental_units_50_ami
   } else if (lensId === "affordable_rental") {
     const rentalsGap = numberOrZero(p.housing_gap_rentals);
     const percent50AMI = toPercent(p.percent_rental_units_50_ami);
@@ -280,10 +288,12 @@ function buildPopupHTML(lensId, properties) {
     });
     lines.push({
       icon: "💡",
-      label:
-        "Shortage of units affordable at \u226450% AMI (as % of rentals, 2029)",
+      label: "Shortage of units affordable at ≤50% AMI (as % of rentals, 2029)",
       value: formatPercent(percent50AMI),
     });
+
+  // 4) Rental Housing Backlog lens
+  //    shows: rental_gap_to_units_ratio, housing_gap_rentals, percent_rental_units_50_ami
   } else if (lensId === "rental_backlog") {
     const rentalsGap = numberOrZero(p.housing_gap_rentals);
     const backlogPercent = toPercent(p.rental_gap_to_units_ratio);
@@ -301,10 +311,12 @@ function buildPopupHTML(lensId, properties) {
     });
     lines.push({
       icon: "💡",
-      label:
-        "Shortage of units affordable at \u226450% AMI (as % of rentals, 2029)",
+      label: "Shortage of units affordable at ≤50% AMI (as % of rentals, 2029)",
       value: formatPercent(percent50AMI),
     });
+
+  // 5) For-Sale Housing Backlog lens
+  //    shows: for_sale_gap_to_units_ratio, housing_gap_for_sale
   } else if (lensId === "forsale_backlog") {
     const forsaleGap = numberOrZero(p.housing_gap_for_sale);
     const backlogPercent = toPercent(p.for_sale_gap_to_units_ratio);
@@ -351,6 +363,7 @@ function buildPopupHTML(lensId, properties) {
     </div>
   `;
 }
+
 
 // ---------- Legend control ----------
 
@@ -486,6 +499,28 @@ function LensSelector({ activeLensId, setActiveLensId }) {
   );
 }
 
+// Fit the map view to the North Carolina counties on first render
+function FitBoundsToNC() {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map) return;
+
+    // Build a temporary GeoJSON layer just to compute bounds
+    const layer = L.geoJSON(ncCounties);
+    const bounds = layer.getBounds();
+
+    if (bounds && bounds.isValid && bounds.isValid()) {
+      map.fitBounds(bounds, {
+        padding: [20, 20], // add a little space around the state
+      });
+    }
+  }, [map]);
+
+  return null;
+}
+
+
 // ---------- NcMap main component ----------
 
 export default function NcMap() {
@@ -522,56 +557,60 @@ export default function NcMap() {
   }
 
   function onEachCounty(feature, layer) {
-    const html = buildPopupHTML(activeLensId, feature.properties || {});
-    layer.bindPopup(html, {
-      maxWidth: 320,
-      closeButton: true,
-      className: "custom-popup",
-    });
+  const html = buildPopupHTML(activeLensId, feature.properties || {});
+  layer.bindPopup(html, {
+    maxWidth: 320,
+    closeButton: true,
+    className: "custom-popup",
+  });
 
-    layer.on({
-      mouseover: (e) => {
-        const target = e.target;
-        target.setStyle({
-          weight: 2,
-          color: "#000000", // thicker black border on hover
-          // no fillColor / fillOpacity change so the lens colors stay as-is
-        });
-        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-          target.bringToFront();
-        }
-      },
-      mouseout: (e) => {
-        const target = e.target;
-        // Reset only the stroke style, do NOT touch fillColor
-        target.setStyle({
-          weight: 1.2,
-          color: "#000000",
-        });
-      },
-    });
-  }
+  layer.on({
+    mouseover: (e) => {
+      const target = e.target;
+      target.setStyle({
+        weight: 2,
+        color: "#000000", // thicker border on hover
+      });
+      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        target.bringToFront();
+      }
+    },
+    mouseout: (e) => {
+      const target = e.target;
+      // Reset only the stroke style, do NOT touch fillColor
+      target.setStyle({
+        weight: 1.2,
+        color: "#000000",
+      });
+    },
+  });
+}
 
-  return (
-    <div className="map-root">
-      <MapContainer
-        center={[35.7596, -79.0193]}
-        zoom={6}
-        style={{ height: "100%", width: "100%" }}
-        zoomControl={true}
-      >
-        <GeoJSON
-          data={ncCounties}
-          style={style}
-          onEachFeature={onEachCounty}
-        />
-        <Legend activeLensId={activeLensId} breaks={breaks} />
-      </MapContainer>
 
-      <LensSelector
-        activeLensId={activeLensId}
-        setActiveLensId={setActiveLensId}
+ return (
+  <div className="map-root">
+    <MapContainer
+      center={[35.7596, -79.0193]}      // fallback, will be overridden by fitBounds
+      zoom={6}                           // fallback
+      style={{ height: "100%", width: "100%" }}
+      zoomControl={true}
+    >
+      {/* NEW: ensure NC fills the map on initial load */}
+      <FitBoundsToNC />
+
+      <GeoJSON
+        data={ncCounties}
+        style={style}
+        onEachFeature={onEachCounty}
       />
-    </div>
-  );
+
+      <Legend activeLensId={activeLensId} breaks={breaks} />
+    </MapContainer>
+
+    <LensSelector
+      activeLensId={activeLensId}
+      setActiveLensId={setActiveLensId}
+    />
+  </div>
+);
 }
