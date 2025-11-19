@@ -383,7 +383,7 @@ function FitBoundsToNC() {
         // Extra padding on bottom-right to push NC slightly up and left
         map.fitBounds(bounds, {
           paddingTopLeft: [10, 10],
-          paddingBottomRight: [120, 140],
+          paddingBottomRight: [130, 150],
         });
       }
     } catch (error) {
