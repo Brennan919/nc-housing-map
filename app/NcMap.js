@@ -510,16 +510,16 @@ export default function NcMap() {
   }, [values]);
 
   function style(feature) {
-  const v = getMetricValue(feature, activeLensId);
-  return {
-    fillColor: getColorForValue(v, breaks, activeLensId),
-    weight: 1.2,
-    opacity: 1,
-    color: "#000000",   // black outlines
-    dashArray: "",
-    fillOpacity: 0.85,
-  };
-}
+    const v = getMetricValue(feature, activeLensId);
+    return {
+      fillColor: getColorForValue(v, breaks, activeLensId),
+      weight: 1.2,
+      opacity: 1,
+      color: "#000000", // black outlines
+      dashArray: "",
+      fillOpacity: 0.85,
+    };
+  }
 
   function onEachCounty(feature, layer) {
     const html = buildPopupHTML(activeLensId, feature.properties || {});
@@ -529,28 +529,28 @@ export default function NcMap() {
       className: "custom-popup",
     });
 
-  layer.on({
-  mouseover: (e) => {
-    const target = e.target;
-    target.setStyle({
-      weight: 2,
-      color: "#000000",  // thicker black border on hover
-      // note: no fillColor / fillOpacity here, so the lens colors stay as-is
+    layer.on({
+      mouseover: (e) => {
+        const target = e.target;
+        target.setStyle({
+          weight: 2,
+          color: "#000000", // thicker black border on hover
+          // no fillColor / fillOpacity change so the lens colors stay as-is
+        });
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+          target.bringToFront();
+        }
+      },
+      mouseout: (e) => {
+        const target = e.target;
+        // Reset only the stroke style, do NOT touch fillColor
+        target.setStyle({
+          weight: 1.2,
+          color: "#000000",
+        });
+      },
     });
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-      target.bringToFront();
-    }
-  },
-  mouseout: (e) => {
-    const target = e.target;
-    // Reset only the stroke style, do NOT touch fillColor
-    target.setStyle({
-      weight: 1.2,
-      color: "#000000",
-    });
-  },
-});
-
+  }
 
   return (
     <div className="map-root">
@@ -560,7 +560,11 @@ export default function NcMap() {
         style={{ height: "100%", width: "100%" }}
         zoomControl={true}
       >
-        <GeoJSON data={ncCounties} style={style} onEachFeature={onEachCounty} />
+        <GeoJSON
+          data={ncCounties}
+          style={style}
+          onEachFeature={onEachCounty}
+        />
         <Legend activeLensId={activeLensId} breaks={breaks} />
       </MapContainer>
 
