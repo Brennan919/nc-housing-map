@@ -504,22 +504,27 @@ function FitBoundsToNC() {
   const map = useMap();
 
   useEffect(() => {
-    if (!map) return;
+    try {
+      if (!map) return;
+      if (!ncCounties || typeof ncCounties !== "object") return;
 
-    const layer = L.geoJSON(ncCounties);
-    const bounds = layer.getBounds();
+      const layer = L.geoJSON(ncCounties);
+      const bounds = layer.getBounds();
 
-    if (bounds && bounds.isValid && bounds.isValid()) {
-      map.fitBounds(bounds, {
-        // Extra space on bottom-right to visually push NC up and left
-        paddingTopLeft: [10, 10],
-        paddingBottomRight: [120, 140],
-      });
+      if (bounds && bounds.isValid && bounds.isValid()) {
+        map.fitBounds(bounds, {
+          paddingTopLeft: [10, 10],
+          paddingBottomRight: [120, 140]
+        });
+      }
+    } catch (err) {
+      console.error("FitBoundsToNC error:", err);
     }
   }, [map]);
 
   return null;
 }
+
 
 
 
@@ -564,8 +569,11 @@ export default function NcMap() {
   // ... your other hooks & helpers (getValueForLens, style, etc.)
 
   const onEachCounty = useCallback(
-    (feature, layer) => {
-      const html = buildPopupHTML(activeLensId, feature.properties || {});
+  (feature, layer) => {
+    try {
+      const props = feature?.properties ?? {};
+      const html = buildPopupHTML(activeLensId, props);
+
       layer.bindPopup(html, {
         maxWidth: 320,
         closeButton: true,
@@ -574,26 +582,19 @@ export default function NcMap() {
 
       layer.on({
         mouseover: (e) => {
-          const target = e.target;
-          target.setStyle({
-            weight: 2,
-            color: "#000000",
-          });
-          if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-            target.bringToFront();
-          }
+          e.target.setStyle({ weight: 2, color: "#000" });
         },
         mouseout: (e) => {
-          const target = e.target;
-          target.setStyle({
-            weight: 1.2,
-            color: "#000000",
-          });
+          e.target.setStyle({ weight: 1.2, color: "#000" });
         },
       });
-    },
-    [activeLensId] // <— key part: re-create handler when lens changes
-  );
+    } catch (err) {
+      console.error("Popup error:", err, feature);
+    }
+  },
+  [activeLensId]
+);
+
 
   // ...
 }
