@@ -131,31 +131,38 @@ function getMetricValue(feature, lensId) {
 
 // Pick a color from the right palette for each lens + class index 0–4
 function getPaletteColor(lensId, classIndex) {
-  // default palette (same as your current overview)
-  const overviewPalette = ["#FFEDA0", "#FD8D3C", "#E31A1C", "#BD0026", "#800026"];
+  // Overview palette (slightly darker light color)
+  const overviewPalette = ["#FED976", "#FD8D3C", "#E31A1C", "#BD0026", "#800026"];
 
-  const perCapitaPalette = ["#eff6ff", "#bfdbfe", "#60a5fa", "#2563eb", "#1d4ed8"]; // blues
+  // Housing Shortage per Capita: blues
+  const perCapitaPalette = ["#dbeafe", "#bfdbfe", "#60a5fa", "#2563eb", "#1d4ed8"];
+
+  // Affordable Rental Unit Shortage: purples
   const affordableRentalPalette = [
-    "#f5f3ff",
-    "#e9d5ff",
+    "#e0e7ff",
     "#c4b5fd",
-    "#8b5cf6",
-    "#6d28d9",
-  ]; // purples
+    "#a855f7",
+    "#7c3aed",
+    "#5b21b6",
+  ];
+
+  // Rental Housing Backlog: greens
   const rentalBacklogPalette = [
-    "#ecfdf3",
     "#bbf7d0",
+    "#86efac",
     "#4ade80",
     "#22c55e",
     "#15803d",
-  ]; // greens
+  ];
+
+  // For-Sale Housing Backlog: pink/red
   const forSaleBacklogPalette = [
-    "#fdf2f8",
     "#f9a8d4",
     "#f472b6",
     "#ec4899",
+    "#db2777",
     "#be185d",
-  ]; // pink/red
+  ];
 
   const palettes = {
     overview: overviewPalette,
@@ -173,7 +180,7 @@ function getPaletteColor(lensId, classIndex) {
 function getColorForValue(value, breaks, lensId) {
   const v = Number(value);
   if (!Number.isFinite(v) || !breaks || !breaks.length) {
-    // light neutral if no data
+    // lightest color from that lens if no data
     return getPaletteColor(lensId, 0);
   }
 
@@ -184,7 +191,6 @@ function getColorForValue(value, breaks, lensId) {
     breaks[3] ?? breaks[2] ?? breaks[1] ?? breaks[0],
   ];
 
-  // Decide which “class” this value belongs to
   let classIndex = 0;
   if (v > b4) classIndex = 4;
   else if (v > b3) classIndex = 3;
@@ -194,6 +200,7 @@ function getColorForValue(value, breaks, lensId) {
 
   return getPaletteColor(lensId, classIndex);
 }
+
 
 
 function formatLegendValue(value, lensId) {
@@ -503,16 +510,16 @@ export default function NcMap() {
   }, [values]);
 
   function style(feature) {
-    const v = getMetricValue(feature, activeLensId);
-    return {
-      fillColor: getColorForValue(v, breaks, activeLensId),
-      weight: 1,
-      opacity: 1,
-      color: "#ffffff",
-      dashArray: "",
-      fillOpacity: 0.85,
-    };
-  }
+  const v = getMetricValue(feature, activeLensId);
+  return {
+    fillColor: getColorForValue(v, breaks, activeLensId),
+    weight: 1.2,
+    opacity: 1,
+    color: "#000000",   // black outlines
+    dashArray: "",
+    fillOpacity: 0.85,
+  };
+}
 
   function onEachCounty(feature, layer) {
     const html = buildPopupHTML(activeLensId, feature.properties || {});
@@ -522,24 +529,28 @@ export default function NcMap() {
       className: "custom-popup",
     });
 
-    layer.on({
-      mouseover: (e) => {
-        const target = e.target;
-        target.setStyle({
-          weight: 2,
-          color: "#111827",
-          fillOpacity: 1,
-        });
-        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-          target.bringToFront();
-        }
-      },
-      mouseout: (e) => {
-        const target = e.target;
-        target.setStyle(style(feature));
-      },
+  layer.on({
+  mouseover: (e) => {
+    const target = e.target;
+    target.setStyle({
+      weight: 2,
+      color: "#000000",  // thicker black border on hover
+      // note: no fillColor / fillOpacity here, so the lens colors stay as-is
     });
-  }
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+      target.bringToFront();
+    }
+  },
+  mouseout: (e) => {
+    const target = e.target;
+    // Reset only the stroke style, do NOT touch fillColor
+    target.setStyle({
+      weight: 1.2,
+      color: "#000000",
+    });
+  },
+});
+
 
   return (
     <div className="map-root">
