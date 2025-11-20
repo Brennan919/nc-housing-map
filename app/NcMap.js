@@ -161,7 +161,7 @@ function getPaletteColor(lensId, classIndex) {
   const overviewPalette = ["#FED976", "#FD8D3C", "#E31A1C", "#aa0223ff", "#5e001cff"];
 
   // Housing Shortage per Capita: blues
-  const perCapitaPalette = ["#bfdbfe", "#74affdff", "#559bf1ff", "#1c57d7ff", "#0a329fff"];
+  const perCapitaPalette = ["#bfdbfe", "#74affdff", "#377adeff", "#1852d0ff", "#072d96ff"];
 
   // Affordable Rental Unit Shortage: purples
   const affordableRentalPalette = [
