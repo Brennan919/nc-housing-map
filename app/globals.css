@@ -312,50 +312,54 @@ body {
   width: 100%;
 }
 
-/* Lens selector: pinned above footer, always visible */
-.lens-card {
-  position: fixed; /* attach to viewport, not just the map container */
-  right: 1.75rem;
-  bottom: calc(var(--footer-height) + 1rem); /* sit just above footer */
-  z-index: 40; /* higher than footer so it is never hidden */
 
-  min-width: 260px;
-  max-width: 320px;
+/* Lens selector: pinned above the map, always visible */
+.lens-card {
+  position: fixed; /* attach to viewport */
+  right: 1.75rem;
+  top: 6.5rem; /* puts it visually above NC map but below the header */
+  z-index: 1000; /* higher than Leaflet so it never hides behind tiles */
+
+  min-width: 280px;
+  max-width: 360px;
   background: #ffffff;
-  border-radius: 16px;
-  padding: 1rem 1.25rem;
+  border-radius: 18px;
+  padding: 1.1rem 1.4rem;
   box-shadow:
-    0 10px 25px rgba(15, 32, 53, 0.25),
-    0 0 0 1px rgba(15, 32, 53, 0.06);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    0 12px 30px rgba(15, 32, 53, 0.28),
+    0 0 0 1px rgba(15, 32, 53, 0.08);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
 /* Lens card container: you can keep your existing position + size rules */
 .lens-card-title,
 .lens-card-title {
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-size: 0.95rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #4b5563;
-  margin-bottom: 0.4rem;
+  letter-spacing: 0.12em;
+  color: #0f172a;
+  margin-bottom: 0.6rem;
 }
+
 
 .lens-options {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .lens-option {
   border: none;
   background: transparent;
-  padding: 4px 0;
+  padding: 6px 0;
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-size: 0.86rem;
-  color: #4b5563;
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #374151;
   text-align: left;
 }
 
@@ -364,20 +368,23 @@ body {
 }
 
 .lens-option-active {
-  font-weight: 600;
+  font-weight: 700;
+  color: #111827;
 }
+
 
 /* Base dot style */
 .lens-dot {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   border-radius: 999px;
-  margin-right: 8px;
+  margin-right: 10px;
   border-width: 2px;
   border-style: solid;
   background: #ffffff;
   box-sizing: border-box;
 }
+
 
 /* Palette-specific dot outlines (match the choropleth palettes) */
 .lens-dot-overview {

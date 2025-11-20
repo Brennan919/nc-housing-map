@@ -29,36 +29,42 @@ const LENS_CONFIG = {
     breaks: [45, 57.5, 70, 82.5],
   },
 
-  // Affordable Rental Unit Shortage: 0–0.20, 0.201–0.35, 0.351–0.50, 0.501–0.65, 0.651+
+  // Affordable Rental Unit Shortage
+  // You specified 0–0.2, 0.201–0.35, 0.351–0.5, 0.501–0.65, 0.651+
+  // Data is converted to percent (x100), so breaks are 20, 35, 50, 65
   affordable_rental: {
     id: "affordable_rental",
     shortLabel: "Affordable Rental Unit Shortage",
     metricKey: "percent_rental_units_50_ami",
     legendTitle:
-      "Shortage of rental units affordable at ≤50% AMI (ratio, 2029)",
-    breaks: [0.2, 0.35, 0.5, 0.65],
+      "Shortage of rental units affordable at ≤50% AMI (percent, 2029)",
+    breaks: [20, 35, 50, 65],
   },
 
-  // Rental Housing Backlog: 0.05–0.10, 0.101–0.15, 0.151–0.20, 0.201–0.25, 0.251+
+  // Rental Housing Backlog
+  // You specified 0.05–0.10, 0.101–0.15, 0.151–0.20, 0.201–0.25, 0.251+
+  // In percent, that’s 5–10, 10.1–15, 15.1–20, 20.1–25, 25.1+
   rental_backlog: {
     id: "rental_backlog",
     shortLabel: "Rental Housing Backlog",
     metricKey: "rental_gap_to_units_ratio",
-    legendTitle: "Rental shortage as share of rental stock (ratio, 2029)",
-    breaks: [0.1, 0.15, 0.2, 0.25],
+    legendTitle: "Rental shortage as % of rental stock (percent, 2029)",
+    breaks: [10, 15, 20, 25],
   },
 
-  // For-Sale Housing Backlog: 0–0.10, 0.101–0.13, 0.131–0.16, 0.161–0.19, 0.191+
+  // For-Sale Housing Backlog
+  // You specified 0–0.10, 0.101–0.130, 0.131–0.160, 0.161–0.190, 0.191+
+  // In percent, that’s 0–10, 10.1–13, 13.1–16, 16.1–19, 19.1+
   forsale_backlog: {
     id: "forsale_backlog",
     shortLabel: "For-Sale Housing Backlog",
     metricKey: "for_sale_gap_to_units_ratio",
     legendTitle:
-      "For-sale shortage as share of for-sale stock (ratio, 2029)",
-    // Interpreting your "0.161 - 0.1.90" as 0.161–0.190
-    breaks: [0.1, 0.13, 0.16, 0.19],
+      "For-sale shortage as % of for-sale stock (percent, 2029)",
+    breaks: [10, 13, 16, 19],
   },
 };
+
 
 
 const LENS_ORDER = [
