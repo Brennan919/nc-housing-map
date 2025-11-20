@@ -11,37 +11,55 @@ import ncCounties from "./nc-counties-merged.json";
 // ---- Lens configuration ----
 
 const LENS_CONFIG = {
+  // Housing Shortage Overview: 0–4k, 4,001–10k, 10,001–16k, 16,001–34k, 34,001+
   overview: {
     id: "overview",
     shortLabel: "Housing Shortage Overview",
     metricKey: "housing_shortage",
     legendTitle: "2029 housing shortage (units)",
+    breaks: [4000, 10000, 16000, 34000],
   },
+
+  // Housing Shortage per Capita: 0–45, 45.1–57.5, 57.6–70, 70.1–82.5, 82.6+
   per_capita: {
     id: "per_capita",
     shortLabel: "Housing Shortage per Capita",
     metricKey: "shortage_per_1000_2029",
     legendTitle: "Shortage per 1,000 people (2029)",
+    breaks: [45, 57.5, 70, 82.5],
   },
+
+  // Affordable Rental Unit Shortage: 0–0.20, 0.201–0.35, 0.351–0.50, 0.501–0.65, 0.651+
   affordable_rental: {
     id: "affordable_rental",
     shortLabel: "Affordable Rental Unit Shortage",
     metricKey: "percent_rental_units_50_ami",
-    legendTitle: "Shortage of rental units affordable at ≤50% AMI (%, 2029)",
+    legendTitle:
+      "Shortage of rental units affordable at ≤50% AMI (ratio, 2029)",
+    breaks: [0.2, 0.35, 0.5, 0.65],
   },
+
+  // Rental Housing Backlog: 0.05–0.10, 0.101–0.15, 0.151–0.20, 0.201–0.25, 0.251+
   rental_backlog: {
     id: "rental_backlog",
     shortLabel: "Rental Housing Backlog",
     metricKey: "rental_gap_to_units_ratio",
-    legendTitle: "Rental shortage as % of rental stock (2029)",
+    legendTitle: "Rental shortage as share of rental stock (ratio, 2029)",
+    breaks: [0.1, 0.15, 0.2, 0.25],
   },
+
+  // For-Sale Housing Backlog: 0–0.10, 0.101–0.13, 0.131–0.16, 0.161–0.19, 0.191+
   forsale_backlog: {
     id: "forsale_backlog",
     shortLabel: "For-Sale Housing Backlog",
     metricKey: "for_sale_gap_to_units_ratio",
-    legendTitle: "For-sale shortage as % of for-sale stock (2029)",
+    legendTitle:
+      "For-sale shortage as share of for-sale stock (ratio, 2029)",
+    // Interpreting your "0.161 - 0.1.90" as 0.161–0.190
+    breaks: [0.1, 0.13, 0.16, 0.19],
   },
 };
+
 
 const LENS_ORDER = [
   "overview",
@@ -536,27 +554,12 @@ function LensSelector({ activeLensId, setActiveLensId }) {
 export default function NcMap() {
   const [activeLensId, setActiveLensId] = useState("overview");
 
-  const values = useMemo(() => {
-    const features = ncCounties.features || [];
-    return features
-      .map((f) => getMetricValue(f, activeLensId))
-      .filter((v) => Number.isFinite(Number(v)));
-  }, [activeLensId]);
+  // Grab the active lens config (including fixed breaks)
+  const lensConfig = LENS_CONFIG[activeLensId];
 
-  const breaks = useMemo(() => {
-    const sorted = [...values].map(Number).sort((a, b) => a - b);
-    if (!sorted.length) return [];
+  // Use the static breaks defined above; 4 breakpoints → 5 classes
+  const breaks = lensConfig?.breaks ?? [];
 
-    const quantile = (p) =>
-      sorted[Math.floor(p * (sorted.length - 1))];
-
-    return [
-      quantile(0.2),
-      quantile(0.4),
-      quantile(0.6),
-      quantile(0.8),
-    ];
-  }, [values]);
 
   function style(feature) {
     const v = getMetricValue(feature, activeLensId);
