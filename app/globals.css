@@ -317,7 +317,7 @@ body {
 .lens-card {
   position: fixed; /* attach to viewport */
   right: 1.75rem;
-  top: 6.5rem; /* puts it visually above NC map but below the header */
+  bottom: 6.5rem; /* puts it visually above NC map but below the header */
   z-index: 1000; /* higher than Leaflet so it never hides behind tiles */
 
   min-width: 280px;
