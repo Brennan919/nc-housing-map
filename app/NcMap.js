@@ -544,34 +544,51 @@ div.appendChild(title);
 // ---------- Lens selector UI ----------
 
 function LensSelector({ activeLensId, setActiveLensId }) {
+  const activeLens = LENS_CONFIG[activeLensId];
+
   return (
-    <div className="lens-card">
-      <div className="lens-card-title">Viewing heatmap data for:</div>
-      <div className="lens-options">
-        {LENS_ORDER.map((id) => {
-          const cfg = LENS_CONFIG[id];
-          const isActive = id === activeLensId;
-          return (
-            <button
-              key={id}
-              type="button"
-              className={`lens-option${isActive ? " lens-option-active" : ""}`}
-              onClick={() => setActiveLensId(id)}
-            >
-              <span
-                className={`lens-dot lens-dot-${id}${
-                  isActive ? " lens-dot-active" : ""
+    <div className={`lens-card lens-card-${activeLensId}`}>
+      {/* Translucent header bar */}
+      <div className={`lens-card-header lens-card-header-${activeLensId}`}>
+        <span className="lens-card-header-label">Heatmap lens</span>
+        <span className="lens-card-header-active">
+          {activeLens?.shortLabel || "Select view"}
+        </span>
+      </div>
+
+      {/* Inner content of the panel */}
+      <div className="lens-card-inner">
+        <div className="lens-card-title">Viewing heatmap data for:</div>
+        <div className="lens-options">
+          {LENS_ORDER.map((id) => {
+            const cfg = LENS_CONFIG[id];
+            const isActive = id === activeLensId;
+            return (
+              <button
+                key={id}
+                type="button"
+                className={`lens-option${
+                  isActive ? " lens-option-active" : ""
                 }`}
-                aria-hidden="true"
-              />
-              <span>{cfg.shortLabel}</span>
-            </button>
-          );
-        })}
+                onClick={() => setActiveLensId(id)}
+              >
+                <span
+                  className={`lens-dot lens-dot-${id}${
+                    isActive ? " lens-dot-active" : ""
+                  }`}
+                  aria-hidden="true"
+                />
+                <span className="lens-label-text">{cfg.shortLabel}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
 }
+
+
 
 
 
