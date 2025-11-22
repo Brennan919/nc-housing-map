@@ -578,7 +578,7 @@ function LensSelector({ activeLensId, setActiveLensId }) {
                   }`}
                   aria-hidden="true"
                 />
-                <span className="lens-label-text">{cfg.shortLabel}</span>
+                <span className="lens-option-label">{cfg.shortLabel}</span>
               </button>
             );
           })}

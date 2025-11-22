@@ -201,6 +201,37 @@ body {
   color: #111827;
 }
 
+/* ==========================
+   ABOUT PANEL COLLAPSE
+   ========================== */
+
+/* Header row inside the about card */
+.about-panel-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+/* The body text area that will collapse/expand */
+.about-panel-body {
+  overflow: hidden;
+  max-height: 260px;
+  transition:
+    max-height 0.24s ease,
+    opacity 0.22s ease,
+    margin-top 0.22s ease;
+  margin-top: 0.25rem;
+}
+
+.about-panel-body-collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+
+
 .about-text {
   margin: 0;
   font-size: 0.9rem;
@@ -472,134 +503,269 @@ body {
   color: #1e293b !important;
 }
 
-.lens-option {
-  font-size: 1rem !important;
-  font-weight: 500 !important;
-  color: #334155 !important;
-}
+/* =========================
+   LENS OPTIONS – LOUDER UI
+   ========================= */
 
-.lens-option-active {
-  font-weight: 700 !important;
-  color: #0f172a !important;
-}
-
-
-
+/* Container for the list */
 .lens-options {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
+/* Each row (dot + text) */
 .lens-option {
   border: none;
   background: transparent;
-  padding: 6px 0;
+  padding: 8px 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-size: 0.98rem;
+  font-size: 1.02rem;
   font-weight: 500;
   color: #374151;
   text-align: left;
-  transition: color 140ms ease, transform 140ms ease;
+
+  border-radius: 999px;
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease,
+    transform 0.16s ease;
 }
 
+/* Hover: subtle slide and pill background */
 .lens-option:hover {
   color: #111827;
-  transform: translateX(1px);
 }
 
-.lens-option-active {
-  font-weight: 700;
-  color: #111827;
-}
-
-/* Optional: slightly emphasize text for the active lens */
-.lens-option-active .lens-label-text {
-  font-weight: 600;
-}
-
-/* Smooth motion for the dots themselves */
-.lens-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  margin-right: 10px;
-  border-width: 2px;
-  border-style: solid;
-  background: #ffffff;
-  box-sizing: border-box;
-  transition: transform 140ms ease, box-shadow 140ms ease;
-}
-
-/* Gentle hover scale */
+/* Louder animation: bump the dot a bit on hover */
 .lens-option:hover .lens-dot {
-  transform: scale(1.05);
-}
-
-/* Slightly larger + subtle halo for the active lens */
-.lens-option-active .lens-dot {
-  transform: scale(1.1);
-  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.06);
+  transform: scale(1.08);
 }
 
 
+/* Active: much darker + bolder + stronger pill */
+.lens-option-active {
+  font-weight: 750;
+  color: #020617;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.07),
+    rgba(15, 23, 42, 0.12)
+  );
+  transform: translateX(3px);
+}
 
-/* Base dot style */
+/* Label span inside each lens-option; you already changed JSX to use this */
+.lens-option-label {
+  font-weight: inherit;
+  font-size: 1.02rem;
+}
+
+/* =============================
+   LENS DOTS – BIGGER / THICKER
+   ============================= */
+
+/* Base dot style – larger + animated */
 .lens-dot {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   border-radius: 999px;
   margin-right: 10px;
-  border-width: 2px;
+
+  border-width: 3px;
   border-style: solid;
   background: #ffffff;
   box-sizing: border-box;
+
+  /* smooth animation */
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 
-/* Palette-specific dot outlines (match the choropleth palettes) */
+/* Hover: slight grow */
+.lens-option:hover .lens-dot {
+  transform: scale(1.08);
+}
+
+/* Active: louder pop + halo (background stays white) */
+.lens-option-active .lens-dot {
+  transform: scale(1.22);
+}
+
+
+/* Palette-specific dot outlines (match your existing colors) */
 .lens-dot-overview {
   border-color: #fb923c; /* orange */
 }
-
 .lens-dot-per_capita {
   border-color: #2563eb; /* blue */
 }
-
 .lens-dot-affordable_rental {
   border-color: #8b5cf6; /* purple */
 }
-
 .lens-dot-rental_backlog {
   border-color: #22c55e; /* green */
 }
-
 .lens-dot-forsale_backlog {
   border-color: #ec4899; /* pink/red */
 }
 
-/* Fill the circle when active */
+/* Inactive rings: unfilled dots with a visible halo */
+.lens-dot-overview {
+  border-color: #fb923c; /* orange */
+  box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.35);
+}
+
+.lens-dot-per_capita {
+  border-color: #2563eb; /* blue */
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.35);
+}
+
+.lens-dot-affordable_rental {
+  border-color: #8b5cf6; /* purple */
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.35);
+}
+
+.lens-dot-rental_backlog {
+  border-color: #22c55e; /* green */
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.35);
+}
+
+.lens-dot-forsale_backlog {
+  border-color: #ec4899; /* pink/red */
+  box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.35);
+}
+
+
+/* Active dots: filled + thicker halo + scale for loud animation */
 .lens-dot-active.lens-dot-overview {
   background: #fb923c;
+  box-shadow: 0 0 0 5px rgba(251, 146, 60, 0.6);
+  transform: scale(1.18);
 }
 
 .lens-dot-active.lens-dot-per_capita {
   background: #2563eb;
+  box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.6);
+  transform: scale(1.18);
 }
 
 .lens-dot-active.lens-dot-affordable_rental {
   background: #8b5cf6;
+  box-shadow: 0 0 0 5px rgba(139, 92, 246, 0.6);
+  transform: scale(1.18);
 }
 
 .lens-dot-active.lens-dot-rental_backlog {
   background: #22c55e;
+  box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.6);
+  transform: scale(1.18);
 }
 
 .lens-dot-active.lens-dot-forsale_backlog {
   background: #ec4899;
+  box-shadow: 0 0 0 5px rgba(236, 72, 153, 0.6);
+  transform: scale(1.18);
 }
+
+
+/* =============================
+   LENS CARD HEADER BAR
+   ============================= */
+
+.lens-card-header {
+  margin: -1rem -1.2rem 0.8rem; /* let header stretch to card edges */
+  padding: 0.65rem 1.2rem;
+
+  border-radius: 14px 14px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  background: rgba(229, 231, 235, 0.96); /* neutral fallback */
+  backdrop-filter: blur(14px);
+
+  border-bottom: 1px solid rgba(15, 23, 42, 0.16);
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.28);
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Small label "Heatmap lens" */
+.lens-card-header-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #111827;
+  opacity: 0.85;
+}
+
+/* Active lens name (wraps nicely) */
+.lens-card-header-active {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #020617;
+  white-space: normal;    /* allow wrapping */
+  max-width: 230px;       /* ensures backlog titles wrap */
+  line-height: 1.25;
+}
+
+/* Subtitle text inside header (if you use it) */
+.lens-header-subtitle {
+  font-size: 0.83rem;
+  font-weight: 500;
+  color: rgba(15, 23, 42, 0.85);
+}
+
+/* Per-lens header tints; text stays dark for readability */
+.lens-card-header-overview {
+  background: linear-gradient(
+    135deg,
+    rgba(254, 215, 170, 0.96),
+    rgba(249, 115, 22, 0.9)
+  );
+}
+
+.lens-card-header-per_capita {
+  background: linear-gradient(
+    135deg,
+    rgba(191, 219, 254, 0.96),
+    rgba(37, 99, 235, 0.9)
+  );
+}
+
+.lens-card-header-affordable_rental {
+  background: linear-gradient(
+    135deg,
+    rgba(221, 214, 254, 0.96),
+    rgba(139, 92, 246, 0.9)
+  );
+}
+
+.lens-card-header-rental_backlog {
+  background: linear-gradient(
+    135deg,
+    rgba(187, 247, 208, 0.96),
+    rgba(34, 197, 94, 0.9)
+  );
+}
+
+.lens-card-header-forsale_backlog {
+  background: linear-gradient(
+    135deg,
+    rgba(251, 207, 232, 0.96),
+    rgba(236, 72, 153, 0.9)
+  );
+}
+
 
 
 .lens-select {
