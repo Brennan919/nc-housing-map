@@ -172,7 +172,7 @@ body {
 /* About panel: floating card at bottom-left */
 .about-panel {
   position: fixed;
-  bottom: 2.8rem;       /* aligns horizontally with lens card */
+  bottom: 3.2rem;       /* aligns horizontally with lens card */
   left: 1.75rem;        /* matches spacing of legend/lens card */
   z-index: 950;
 
@@ -330,7 +330,7 @@ body {
 .lens-card {
   position: fixed; /* attach to viewport */
   right: 1.75rem;
-  bottom: 2.8rem; /* puts it visually above NC map but below the header */
+  bottom: 3.2rem; /* puts it visually above NC map but below the header */
   z-index: 1000; /* higher than Leaflet so it never hides behind tiles */
 
   min-width: 280px;
@@ -528,3 +528,64 @@ body {
 .leaflet-container {
   background: #f8fafc !important;
 }
+
+/* ==========================================================
+   PROFESSIONAL LEGEND UPGRADE (Smooth, Modern, Polished)
+   ========================================================== */
+
+.legend-leaflet {
+  background: #ffffff !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(0, 0, 0, 0.10) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12) !important;
+
+  padding: 1.1rem 1.25rem !important;
+
+  /* Typography */
+  font-family: "Inter", "Segoe UI", Roboto, -apple-system, sans-serif !important;
+  font-size: 0.98rem !important;
+  line-height: 1.45 !important;
+  color: #0f172a !important;
+
+  /* Compact max width for aesthetics */
+  max-width: 260px !important;
+}
+
+/* Title inside legend */
+.legend-title {
+  font-size: 1.05rem !important;
+  font-weight: 650 !important;
+  color: #1e293b !important;
+  margin-bottom: 0.65rem !important;
+  letter-spacing: 0.01em !important;
+}
+
+/* Legend rows */
+.legend-row {
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 0.55rem !important;
+}
+
+/* The colored box */
+.legend-color {
+  width: 20px !important;
+  height: 16px !important;
+  border-radius: 4px !important;
+  margin-right: 10px !important;
+  border: 1px solid rgba(0,0,0,0.15) !important;
+}
+
+/* Labels for each bucket */
+.legend-label {
+  font-size: 0.94rem !important;
+  font-weight: 500 !important;
+  color: #334155 !important;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+

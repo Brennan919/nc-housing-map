@@ -171,11 +171,11 @@ function getPaletteColor(lensId, classIndex) {
 
   // Affordable Rental Unit Shortage: purples
   const affordableRentalPalette = [
-    "#e0d4fdff",
-    "#a788ffff",
-    "#a04deeff",
-    "#6320d5ff",
-    "#3b0a8cff",
+    "#e4dafbff",
+    "#c395ffff",
+    "#9943eaff",
+    "#5c15d7ff",
+    "#31027dff",
   ];
 
   // Rental Housing Backlog: greens
