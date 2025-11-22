@@ -164,7 +164,7 @@ function getMetricValue(feature, lensId) {
 // Pick a color from the right palette for each lens + class index 0–4
 function getPaletteColor(lensId, classIndex) {
   // Overview palette (slightly darker light color)
-  const overviewPalette = ["#fde092ff", "#ff852eff", "#da1010ff", "#9a002eff", "#4b0017ff"];
+  const overviewPalette = ["#fde092ff", "#ff852eff", "#dc0a0aff", "#8c0000ff", "#430400ff"];
 
   // Housing Shortage per Capita: blues
   const perCapitaPalette = ["#e7f2ffff", "#82b8ffff", "#1f78fdff", "#003cbfff", "#001c6aff"];
