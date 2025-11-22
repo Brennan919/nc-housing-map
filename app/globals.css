@@ -169,16 +169,27 @@ body {
   overflow: hidden; /* important: map + about must stay within this row */
 }
 
-/* About panel at the top of the main content */
+/* About panel: floating card, not full-width */
 .about-panel {
-  max-width: 900px;
-  margin: 4px auto 0;
-  padding: 14px 16px 12px;
-  background: rgba(248, 250, 252, 0.97);
+  position: fixed;
+  /* just below the fixed header; adjust if needed */
+  top: calc(var(--header-height) + 10px);
+  left: 1.5rem;
+  z-index: 950;
+
+  max-width: 420px;
+  padding: 12px 14px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(219, 234, 254, 0.98),
+    rgba(191, 219, 254, 0.98)
+  );
   border-radius: 16px;
-  border: 1px solid var(--color-border-subtle);
+  border: 1px solid rgba(37, 99, 235, 0.4);
   box-shadow: 0 18px 45px rgba(15, 23, 42, 0.25);
 }
+
 
 .about-title {
   margin: 0 0 4px;
@@ -193,8 +204,9 @@ body {
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.5;
-  color: var(--color-text-muted);
+  color: #0f172a; /* darker, higher contrast */
 }
+
 
 /* Map wrapper fills the remaining height in the middle row */
 .page-map-wrapper {
@@ -317,7 +329,7 @@ body {
 .lens-card {
   position: fixed; /* attach to viewport */
   right: 1.75rem;
-  bottom: 2.5rem; /* puts it visually above NC map but below the header */
+  bottom: 2.8rem; /* puts it visually above NC map but below the header */
   z-index: 1000; /* higher than Leaflet so it never hides behind tiles */
 
   min-width: 280px;

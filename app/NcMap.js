@@ -30,20 +30,20 @@ const LENS_CONFIG = {
   },
 
   // Affordable Rental Unit Shortage
-  // You specified 0–0.2, 0.201–0.35, 0.351–0.5, 0.501–0.65, 0.651+
-  // Data is converted to percent (x100), so breaks are 20, 35, 50, 65
+  // You specified 0–0.3, 0.301–0.41, 0.411–0.52, 0.521–0.65, 0.651+
+  // Data is converted to percent (x100), so breaks are 30, 41, 52, 65
     affordable_rental: {
     id: "affordable_rental",
     shortLabel: "Affordable Rental Unit Shortage",
     metricKey: "percent_rental_units_50_ami",
     // shorter single-line fallback if ever needed
-    legendTitle: "Shortage of rental units affordable at ≤50% AMI",
+    legendTitle: "Percent of rental shortage needed by households making ≤50% of AMI",
     // 👇 explicit multi-line title for the Leaflet legend
     legendTitleLines: [
       "Shortage of rental units",
       "affordable at ≤50% AMI (percent, 2029)",
     ],
-    breaks: [20, 35, 50, 65],
+    breaks: [30, 41, 52, 65],
   },
 
 
@@ -447,6 +447,7 @@ function Legend({ activeLensId, breaks }) {
       div.style.color = "#111827";
       div.style.border = "1px solid #cbd5e1";
       div.style.minWidth = "230px";
+      div.style.maxWidth = "260px"; // 👈 add this
 
       const cfg = LENS_CONFIG[activeLensId];
 const titleText = cfg ? cfg.legendTitle : "Legend";

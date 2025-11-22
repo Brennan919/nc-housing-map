@@ -38,12 +38,14 @@ export default function Home() {
           <section className="about-panel" aria-label="About this map">
             <h2 className="about-title">About this map</h2>
             <p className="about-text">
-              This map was inspired by HR&amp;A Advisors&rsquo; housing scarcity
-              dashboard for the Florida Apartments Association. It is the first
-              interactive, county-level map of North Carolina&rsquo;s housing
-              shortage. It visualizes the state&apos;s housing supply gap in
-              2029, based on research conducted by Bowen National Research for
-              the NC Chamber. It was created by Brien Brennan.
+              This map was created by Brien Brennan, and inspired by HR&amp;A
+      Advisors&rsquo; housing scarcity dashboard for the Florida
+      Apartments Association. It is the first-ever interactive,
+      county-level map of North Carolina&rsquo;s housing shortage. It
+      visualizes the state&apos;s housing supply gap in 2029, based on
+      research conducted by Bowen National Research for the NC Chamber.
+      View different data using the heatmap selector tool, and click on
+      counties to see details about the shortage.
             </p>
           </section>
         )}
