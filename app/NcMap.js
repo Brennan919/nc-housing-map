@@ -164,10 +164,10 @@ function getMetricValue(feature, lensId) {
 // Pick a color from the right palette for each lens + class index 0–4
 function getPaletteColor(lensId, classIndex) {
   // Overview palette (slightly darker light color)
-  const overviewPalette = ["#ffe59cff", "#ff852eff", "#ed2e4bff", "#a40013ff", "#4b0017ff"];
+  const overviewPalette = ["#fde092ff", "#ff852eff", "#e41635ff", "#a40013ff", "#4b0017ff"];
 
   // Housing Shortage per Capita: blues
-  const perCapitaPalette = ["#d1e5feff", "#7eb6feff", "#2d81feff", "#0845c8ff", "#02227bff"];
+  const perCapitaPalette = ["#dcecffff", "#6dacffff", "#277dffff", "#0140c7ff", "#02227bff"];
 
   // Affordable Rental Unit Shortage: purples
   const affordableRentalPalette = [
@@ -180,9 +180,9 @@ function getPaletteColor(lensId, classIndex) {
 
   // Rental Housing Backlog: greens
   const rentalBacklogPalette = [
-    "#c7ffdaff",
-    "#74e68bff",
-    "#2cf84aff",
+    "#cfffdfff",
+    "#81f999ff",
+    "#42f866ff",
     "#008d1fff",
     "#004218ff",
   ];
@@ -190,8 +190,8 @@ function getPaletteColor(lensId, classIndex) {
   // For-Sale Housing Backlog: pink/red
   const forSaleBacklogPalette = [
     "#ffe8f5ff",
-    "#ff76bdff",
-    "#ea1981ff",
+    "#ff6bb8ff",
+    "#e80878ff",
     "#980045ff",
     "#540034ff",
   ];
