@@ -172,7 +172,7 @@ body {
 /* About panel: floating card at bottom-left */
 .about-panel {
   position: fixed;
-  bottom: 4rem;       /* aligns horizontally with lens card */
+  bottom: 4.2rem;       /* aligns horizontally with lens card */
   left: 1.75rem;        /* matches spacing of legend/lens card */
   z-index: 950;
 
@@ -330,7 +330,7 @@ body {
 .lens-card {
   position: fixed; /* attach to viewport */
   right: 1.75rem;
-  bottom: 4rem; /* puts it visually above NC map but below the header */
+  bottom: 4.2rem; /* puts it visually above NC map but below the header */
   z-index: 1000; /* higher than Leaflet so it never hides behind tiles */
 
   min-width: 280px;
