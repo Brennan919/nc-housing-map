@@ -32,14 +32,20 @@ const LENS_CONFIG = {
   // Affordable Rental Unit Shortage
   // You specified 0–0.2, 0.201–0.35, 0.351–0.5, 0.501–0.65, 0.651+
   // Data is converted to percent (x100), so breaks are 20, 35, 50, 65
-  affordable_rental: {
+    affordable_rental: {
     id: "affordable_rental",
     shortLabel: "Affordable Rental Unit Shortage",
     metricKey: "percent_rental_units_50_ami",
-    legendTitle:
-      "Shortage of rental units affordable at ≤50% AMI (percent, 2029)",
+    // shorter single-line fallback if ever needed
+    legendTitle: "Shortage of rental units affordable at ≤50% AMI",
+    // 👇 explicit multi-line title for the Leaflet legend
+    legendTitleLines: [
+      "Shortage of rental units",
+      "affordable at ≤50% AMI (percent, 2029)",
+    ],
     breaks: [20, 35, 50, 65],
   },
+
 
   // Rental Housing Backlog
   // You specified 0.05–0.10, 0.101–0.15, 0.151–0.20, 0.201–0.25, 0.251+
@@ -443,15 +449,28 @@ function Legend({ activeLensId, breaks }) {
       div.style.minWidth = "230px";
 
       const cfg = LENS_CONFIG[activeLensId];
-      const titleText = cfg ? cfg.legendTitle : "Legend";
+const titleText = cfg ? cfg.legendTitle : "Legend";
 
-      const title = document.createElement("div");
-      title.style.fontWeight = "700";
-      title.style.marginBottom = "8px";
-      title.style.fontSize = "14px";
-      title.style.letterSpacing = "0.02em";
-      title.textContent = titleText;
-      div.appendChild(title);
+const title = document.createElement("div");
+title.style.fontWeight = "700";
+title.style.marginBottom = "8px";
+title.style.fontSize = "14px";
+title.style.letterSpacing = "0.02em";
+
+// If this lens defines legendTitleLines, render each line separately
+if (cfg && Array.isArray(cfg.legendTitleLines)) {
+  cfg.legendTitleLines.forEach((line) => {
+    const lineDiv = document.createElement("div");
+    lineDiv.textContent = line;
+    title.appendChild(lineDiv);
+  });
+} else {
+  // fallback: single-line title
+  title.textContent = titleText;
+}
+
+div.appendChild(title);
+
 
       let breaksToUse = Array.isArray(breaks) ? breaks : [];
       if (breaksToUse.length === 0) {
