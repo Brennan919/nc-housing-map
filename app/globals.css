@@ -1074,3 +1074,13 @@ body {
   margin: 2px 0;
 }
 
+
+/* Make "SHORTAGE HEATMAP DATA FOR:" very dark / black */
+.lens-card-header-label {
+  color: #000000 !important;     /* PURE BLACK */
+  font-weight: 800 !important;   /* bolder for visibility */
+  letter-spacing: 0.04em !important;
+  font-size: 0.9rem !important;
+  text-shadow: none !important;  /* prevents any glow from gradient */
+}
+
