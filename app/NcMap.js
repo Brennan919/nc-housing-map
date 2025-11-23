@@ -12,63 +12,63 @@ import ncCounties from "./nc-counties-merged.json";
 
 const LENS_CONFIG = {
   // Housing Shortage Overview: 0–4k, 4,001–10k, 10,001–16k, 16,001–34k, 34,001+
-  overview: {
-    id: "overview",
-    shortLabel: "Housing Shortage Overview",
-    metricKey: "housing_shortage",
-    legendTitle: "2029 housing shortage (units)",
-    breaks: [4000, 10000, 16000, 34000],
-  },
+overview: {
+  id: "overview",
+  shortLabel: "Housing (Overview)",
+  metricKey: "housing_shortage",
+  legendTitle: "2029 housing shortage (units)",
+  breaks: [4000, 10000, 16000, 34000],
+},
 
-  // Housing Shortage per Capita: 0–45, 45.1–57.5, 57.6–70, 70.1–82.5, 82.6+
-  per_capita: {
-    id: "per_capita",
-    shortLabel: "Housing Shortage per Capita",
-    metricKey: "shortage_per_1000_2029",
-    legendTitle: "Shortage per 1,000 people (2029)",
-    breaks: [45, 57.5, 70, 82.5],
-  },
+// Housing Shortage per Capita: 0–45, ...
+per_capita: {
+  id: "per_capita",
+  shortLabel: "Housing (per Capita)",
+  metricKey: "shortage_per_1000_2029",
+  legendTitle: "2029 shortage per 1,000 people (units)",
+  breaks: [45, 57.5, 70, 82.5],
+},
 
-  // Affordable Rental Unit Shortage
-  // You specified 0–0.3, 0.301–0.41, 0.411–0.52, 0.521–0.65, 0.651+
-  // Data is converted to percent (x100), so breaks are 30, 41, 52, 65
-    affordable_rental: {
-    id: "affordable_rental",
-    shortLabel: "Affordable Rental Shortage",
-    metricKey: "percent_rental_units_50_ami",
-    // shorter single-line fallback if ever needed
-    legendTitle: "Percent of rental shortage needed by households making ≤50% of AMI",
-    // 👇 explicit multi-line title for the Leaflet legend
-    legendTitleLines: [
-      "Shortage of rental units",
-      "affordable at ≤50% AMI (percent, 2029)",
-    ],
-    breaks: [30, 41, 52, 65],
-  },
+// Affordable Rental Housing
+// You specified 0–0.3, ...
+affordable_rental: {
+  id: "affordable_rental",
+  shortLabel: "Affordable Rental Housing",
+  metricKey: "percent_rental_units_50_ami",
+
+  // Legend header for this lens
+  legendTitle: "% of 2029 rental shortage needed by low-income households",
+
+  // Optional multi-line version (not currently used, but kept for clarity)
+  legendTitleLines: [
+    "% of 2029 rental shortage",
+    "needed by low-income households",
+  ],
+
+  breaks: [30, 41, 52, 65],
+},
 
 
   // Rental Housing Backlog
   // You specified 0.05–0.10, 0.101–0.15, 0.151–0.20, 0.201–0.25, 0.251+
   // In percent, that’s 5–10, 10.1–15, 15.1–20, 20.1–25, 25.1+
   rental_backlog: {
-    id: "rental_backlog",
-    shortLabel: "Rental Housing Backlog",
-    metricKey: "rental_gap_to_units_ratio",
-    legendTitle: "Rental shortage as % of rental stock (percent, 2029)",
-    breaks: [10, 15, 20, 25],
-  },
+  id: "rental_backlog",
+  shortLabel: "Rental Housing",
+  metricKey: "rental_gap_to_units_ratio",
+  legendTitle: "Rental shortage as % of 2029 rental stock",
+  breaks: [10, 15, 20, 25],
+},
 
-  // For-Sale Housing Backlog
-  // You specified 0–0.10, 0.101–0.130, 0.131–0.160, 0.161–0.190, 0.191+
-  // In percent, that’s 0–10, 10.1–13, 13.1–16, 16.1–19, 19.1+
-  forsale_backlog: {
-    id: "forsale_backlog",
-    shortLabel: "For-Sale Housing Backlog",
-    metricKey: "for_sale_gap_to_units_ratio",
-    legendTitle:
-      "For-sale shortage as % of for-sale stock (percent, 2029)",
-    breaks: [10, 13, 16, 19],
-  },
+// For-Sale Housing Backlog
+// ...
+forsale_backlog: {
+  id: "forsale_backlog",
+  shortLabel: "For-Sale Housing",
+  metricKey: "for_sale_gap_to_units_ratio",
+  legendTitle: "For-sale shortage as % of 2029 for-sale stock",
+  breaks: [10, 13, 16, 19],
+},
 };
 
 // Friendly explanations for each lens, used in hover tooltips
@@ -193,7 +193,7 @@ function getPaletteColor(lensId, classIndex) {
 
   // Rental Housing Backlog: greens
   const rentalBacklogPalette = [
-    "#dcffe7ff",
+    "#e4ffedff",
     "#80eb95ff",
     "#13c236ff",
     "#006c17ff",
@@ -562,8 +562,8 @@ function LensSelector({ activeLensId, setActiveLensId }) {
 
       {/* Inner content of the panel */}
       <div className="lens-card-inner">
-        <div className="lens-card-title">Viewing heatmap data for:</div>
-        <div className="lens-options">
+  <div className="lens-card-title">Shortage heatmap data for:</div>
+  <div className="lens-options">
           {LENS_ORDER.map((id) => {
             const cfg = LENS_CONFIG[id];
             const isActive = id === activeLensId;

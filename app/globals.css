@@ -117,13 +117,18 @@ body {
   font-weight: 700;
   letter-spacing: 0.02em;
   color: #e5f2ff;
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
 }
 
 .site-subtitle {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   font-weight: 400;
+  letter-spacing: 0.02em;
   color: rgba(226, 232, 240, 0.9);
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
 }
 
 /* About toggle button */
