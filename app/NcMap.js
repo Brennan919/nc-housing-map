@@ -555,14 +555,14 @@ function LensSelector({ activeLensId, setActiveLensId }) {
     <div className={`lens-card lens-card-${activeLensId}`}>
       {/* Translucent header bar */}
       <div className={`lens-card-header lens-card-header-${activeLensId}`}>
-        <span className="lens-card-header-active">
-          {activeLens?.shortLabel || "Select view"}
-        </span>
-      </div>
+  <span className="lens-card-header-label">
+    SHORTAGE HEATMAP DATA FOR:
+  </span>
+</div>
+
 
       {/* Inner content of the panel */}
       <div className="lens-card-inner">
-  <div className="lens-card-title">Shortage heatmap data for:</div>
   <div className="lens-options">
           {LENS_ORDER.map((id) => {
             const cfg = LENS_CONFIG[id];
