@@ -84,13 +84,13 @@ body {
 /* Header now lives in the first grid row (no fixed positioning) */
 .site-header {
   grid-row: 1;
-  /* no position: fixed here */
   background: linear-gradient(
     135deg,
-    rgba(15, 23, 42, 0.98),
-    rgba(30, 64, 175, 0.98)
+    #020617,
+    #1d4ed8
   );
   border-bottom: 1px solid rgba(148, 163, 184, 0.5);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.45);
   backdrop-filter: blur(16px);
 }
 
@@ -130,12 +130,8 @@ body {
 .about-toggle {
   border-radius: 999px;
   border: 1px solid rgba(148, 163, 184, 0.8);
-  background: radial-gradient(
-    circle at top left,
-    rgba(56, 189, 248, 0.22),
-    rgba(15, 23, 42, 0.9)
-  );
-  color: #e5f2ff;
+  background: #0f172a;            /* solid */
+  color: #f9fafb;
   padding: 8px 14px;
   font-size: 0.85rem;
   font-weight: 500;
@@ -146,6 +142,7 @@ body {
   transition: background 0.15s ease, transform 0.1s ease,
     box-shadow 0.15s ease, border-color 0.15s ease;
 }
+
 
 .about-toggle:hover {
   transform: translateY(-1px);
@@ -234,10 +231,15 @@ body {
 
 .about-text {
   margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
   color: #0f172a; /* darker, higher contrast */
 }
+
 
 
 /* Map wrapper fills the remaining height in the middle row */
@@ -266,18 +268,20 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 0.9rem;
-  background: #0b253a;
+  background: linear-gradient(90deg, #020617, #0f172a);
   color: #f5f7fa;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(148, 163, 184, 0.6);
+  box-shadow: 0 -8px 20px rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(10px);
   z-index: 30;
 }
-
 
 .footer-text {
   max-width: 1120px;
   margin: 0 auto;
   padding: 10px 20px;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.01em;
   color: rgba(226, 232, 240, 0.9);
   display: flex;
   flex-wrap: wrap;
@@ -713,10 +717,11 @@ body {
   font-size: 0.9rem;
   font-weight: 700;
   color: #020617;
-  white-space: normal;    /* allow wrapping */
-  max-width: 230px;       /* ensures backlog titles wrap */
-  line-height: 1.25;
+  white-space: nowrap;        /* keep it on one line */
+  overflow: hidden;           /* prevent resizing */
+  text-overflow: ellipsis;    /* if it’s too long, show … */
 }
+
 
 /* Subtitle text inside header (if you use it) */
 .lens-header-subtitle {
@@ -870,4 +875,72 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* =============================
+   LEGEND HEADER BAR (MATCH LENS CARD)
+   ============================= */
+
+.legend-header {
+  margin: -1rem -1.2rem 0.8rem;  /* extend to legend edges */
+  padding: 0.55rem 1.2rem;
+
+  border-radius: 14px 14px 10px 10px;
+  background: rgba(229, 231, 235, 0.96); /* default */
+  backdrop-filter: blur(14px);
+
+  border-bottom: 1px solid rgba(15, 23, 42, 0.16);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.25);
+}
+
+/* Metric heading text inside the legend header */
+.legend-header-title {
+  font-size: 0.9rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #020617;
+  white-space: nowrap;        /* single line */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Per-lens gradients (align with lens card colors) */
+.legend-header-overview {
+  background: linear-gradient(
+    135deg,
+    rgba(254, 215, 170, 0.96),
+    rgba(249, 115, 22, 0.9)
+  );
+}
+
+.legend-header-per_capita {
+  background: linear-gradient(
+    135deg,
+    rgba(191, 219, 254, 0.96),
+    rgba(37, 99, 235, 0.9)
+  );
+}
+
+.legend-header-affordable_rental {
+  background: linear-gradient(
+    135deg,
+    rgba(221, 214, 254, 0.96),
+    rgba(139, 92, 246, 0.9)
+  );
+}
+
+.legend-header-rental_backlog {
+  background: linear-gradient(
+    135deg,
+    rgba(187, 247, 208, 0.96),
+    rgba(34, 197, 94, 0.9)
+  );
+}
+
+.legend-header-forsale_backlog {
+  background: linear-gradient(
+    135deg,
+    rgba(251, 207, 232, 0.96),
+    rgba(236, 72, 153, 0.9)
+  );
+}
 

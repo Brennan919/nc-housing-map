@@ -34,7 +34,7 @@ const LENS_CONFIG = {
   // Data is converted to percent (x100), so breaks are 30, 41, 52, 65
     affordable_rental: {
     id: "affordable_rental",
-    shortLabel: "Affordable Rental Unit Shortage",
+    shortLabel: "Affordable Rental Shortage",
     metricKey: "percent_rental_units_50_ami",
     // shorter single-line fallback if ever needed
     legendTitle: "Percent of rental shortage needed by households making ≤50% of AMI",
@@ -449,28 +449,20 @@ function Legend({ activeLensId, breaks }) {
       div.style.minWidth = "230px";
       div.style.maxWidth = "260px"; // 👈 add this
 
-      const cfg = LENS_CONFIG[activeLensId];
-const titleText = cfg ? cfg.legendTitle : "Legend";
+            const cfg = LENS_CONFIG[activeLensId];
+      const titleText = cfg ? cfg.legendTitle : "Legend";
 
-const title = document.createElement("div");
-title.style.fontWeight = "700";
-title.style.marginBottom = "8px";
-title.style.fontSize = "14px";
-title.style.letterSpacing = "0.02em";
+      // Create a header bar similar to the lens card header
+      const header = document.createElement("div");
+      header.className = `legend-header legend-header-${activeLensId}`;
 
-// If this lens defines legendTitleLines, render each line separately
-if (cfg && Array.isArray(cfg.legendTitleLines)) {
-  cfg.legendTitleLines.forEach((line) => {
-    const lineDiv = document.createElement("div");
-    lineDiv.textContent = line;
-    title.appendChild(lineDiv);
-  });
-} else {
-  // fallback: single-line title
-  title.textContent = titleText;
-}
+      const headerTitle = document.createElement("div");
+      headerTitle.className = "legend-header-title";
+      headerTitle.textContent = titleText; // metric / legend title
 
-div.appendChild(title);
+      header.appendChild(headerTitle);
+      div.appendChild(header);
+
 
 
       let breaksToUse = Array.isArray(breaks) ? breaks : [];
@@ -550,7 +542,6 @@ function LensSelector({ activeLensId, setActiveLensId }) {
     <div className={`lens-card lens-card-${activeLensId}`}>
       {/* Translucent header bar */}
       <div className={`lens-card-header lens-card-header-${activeLensId}`}>
-        <span className="lens-card-header-label">Heatmap lens</span>
         <span className="lens-card-header-active">
           {activeLens?.shortLabel || "Select view"}
         </span>
