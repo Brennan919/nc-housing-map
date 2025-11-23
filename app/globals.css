@@ -568,12 +568,15 @@ body {
   padding: 1rem 1.2rem !important;
 }
 
+/* Lens card inner header text (Shortage heatmap data for:) */
 .lens-card-title {
-  font-size: 0.95rem !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
-  color: #1e293b !important;
+  font-size: 1.05rem !important;     /* larger, more prominent */
+  font-weight: 700 !important;        /* stronger weight */
+  letter-spacing: 0.03em !important;
+  color: #0b0f1a !important;          /* very dark navy / near-black */
+  margin-bottom: 0.75rem !important;
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system,
+    BlinkMacSystemFont, sans-serif !important;
 }
 
 .legend-title {
