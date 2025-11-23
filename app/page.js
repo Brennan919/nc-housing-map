@@ -12,23 +12,21 @@ export default function Home() {
     <div className="page-shell">
       {/* Fixed header with title */}
       <header className="site-header">
-  <div className="site-header-inner">
-    <div className="site-title-block">
-      <h1 className="site-title">
-        North Carolina Housing Shortage Map by Brien Brennan
-      </h1>
-      <p className="site-subtitle">
-        County-by-county visualization of the 2029 housing supply gap
-      </p>
-    </div>
-  </div>
-</header>
-
+        <div className="site-header-inner">
+          <div className="site-title-block">
+            <h1 className="site-title">
+              North Carolina Housing Shortage Map by Brien Brennan
+            </h1>
+            <p className="site-subtitle">
+              County-by-county visualization of the 2029 housing supply gap
+            </p>
+          </div>
+        </div>
+      </header>
 
       {/* Main content: about panel + map */}
-            {/* Main content: about panel + map */}
       <main className="main-content">
-        {/* Floating About card (bottom–left via CSS .about-panel) */}
+        {/* Floating About card at bottom-left (positioned via .about-panel CSS) */}
         <section className="about-panel" aria-label="About this map">
           <div className="about-panel-header-row">
             <h2 className="about-title">About this map</h2>
@@ -50,16 +48,16 @@ export default function Home() {
           >
             <p className="about-text">
               This map was created by Brien Brennan, and inspired by HR&amp;A
-              Advisors’ housing scarcity dashboard for the Florida Apartments
-              Association.
+              Advisors&apos; housing scarcity dashboard for the Florida
+              Apartments Association.
             </p>
 
             <p className="about-text">
               It is the first-ever interactive, county-level map of North
-              Carolina’s housing shortage, visualizing the state's housing
-              supply gap in 2029 based on data from Bowen National Research.
-              View different data using the heatmap selector tool, and click on
-              counties to see details about the shortage.
+              Carolina&apos;s housing shortage, visualizing the state&apos;s
+              housing supply gap in 2029 based on data from Bowen National
+              Research. View different data using the heatmap selector tool, and
+              click on counties to see details about the shortage.
             </p>
 
             <p className="about-text">
@@ -85,8 +83,6 @@ export default function Home() {
         </section>
       </main>
 
-
-
       {/* Fixed footer with contact + copyright */}
       <footer className="site-footer">
         <p className="footer-text">
@@ -100,4 +96,3 @@ export default function Home() {
     </div>
   );
 }
-
