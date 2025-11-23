@@ -65,7 +65,7 @@ export default function Home() {
   </p>
 
   <p className="about-text">
-    It is the first-ever interactive, county-level map of North
+    It is the first interactive, county-level map of North
     Carolina&apos;s housing shortage, visualizing the state&apos;s
     housing supply gap in 2029 based on data from Bowen National
     Research.
