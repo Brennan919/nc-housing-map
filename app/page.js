@@ -28,37 +28,39 @@ export default function Home() {
       {/* Main content: about panel + map */}
       {/* Main content: about panel + map */}
 <main className="main-content">
-  <section className="about-panel" aria-label="About this map">
-    <div className="about-panel-header-row">
-      <h2 className="about-title">About this map</h2>
-      <button
-        type="button"
-        className="about-toggle"
-        onClick={() => setShowAbout((prev) => !prev)}
-      >
-        {showAbout ? "Hide details" : "Show details"}
-      </button>
-    </div>
-
     <div
-      className={
-        "about-panel-body" +
-        (showAbout ? "" : " about-panel-body-collapsed")
-      }
-    >
-      <p className="about-text">
-        This map was created by Brien Brennan, and inspired by HR&amp;A
-        Advisors&rsquo; housing scarcity dashboard for the Florida
-        Apartments Association. It is the first-ever interactive,
-        county-level map of North Carolina&rsquo;s housing shortage. It
-        visualizes the state&apos;s housing supply gap in 2029, based on
-        research conducted by Bowen National Research for the NC Chamber.
-        View different data using the heatmap selector tool, and click on
-        counties to see details about the shortage.
-      </p>
-    </div>
-  </section>
+    className={
+      "about-panel-body" +
+      (showAbout ? "" : " about-panel-body-collapsed")
+    }
+  >
+    <p className="about-text">
+      This map was created by Brien Brennan, and inspired by HR&amp;A
+      Advisors&rsquo; housing scarcity dashboard for the Florida
+      Apartments Association.
+    </p>
 
+    <p className="about-text">
+      It is the first-ever interactive, county-level map of
+      North Carolina&rsquo;s housing shortage, visualizing the state&apos;s
+      housing supply gap in 2029 based on data from Bowen National
+      Research. View different data using the heatmap selector tool, and
+      click on counties to see details about the shortage.
+    </p>
+
+    <p className="about-text">
+      Read the Bowen National Research report{" "}
+      <a
+        href="https://ncchamber.com/foundation/nc-housing-analysis/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        here
+      </a>
+      .
+    </p>
+  </div>
+  
   <section className="page-map-wrapper">
     <NcMap />
   </section>

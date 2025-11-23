@@ -214,7 +214,7 @@ body {
 /* The body text area that will collapse/expand */
 .about-panel-body {
   overflow: hidden;
-  max-height: 260px;
+  max-height: 600px;
   transition:
     max-height 0.24s ease,
     opacity 0.22s ease,
@@ -368,8 +368,8 @@ body {
   bottom: 4.2rem; /* puts it visually above NC map but below the header */
   z-index: 1000; /* higher than Leaflet so it never hides behind tiles */
 
-  min-width: 280px;
-  max-width: 360px;
+  min-width: 320px;
+  max-width: 380px;
   background: #ffffff;
   border-radius: 18px;
   padding: 1.1rem 1.4rem;
@@ -536,6 +536,75 @@ body {
     color 0.18s ease,
     background-color 0.18s ease,
     transform 0.16s ease;
+}
+
+/* Wraps label + question mark icon */
+.lens-option-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  gap: 0.5rem;
+}
+
+/* Question mark icon with tooltip */
+.lens-help-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0f172a;
+  background: rgba(248, 250, 252, 0.95);
+
+  cursor: default;
+}
+
+/* Tooltip bubble */
+.lens-help-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: 130%;
+  transform: translateX(-50%);
+  z-index: 2000;
+
+  min-width: 220px;
+  max-width: 260px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #f9fafb;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.45);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+/* Tooltip arrow */
+.lens-help-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #0f172a transparent transparent transparent;
+}
+
+/* Show tooltip on hover */
+.lens-help-icon:hover .lens-help-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
 }
 
 /* Hover: subtle slide and pill background */
@@ -834,113 +903,94 @@ body {
   line-height: 1.45 !important;
   color: #0f172a !important;
 
-  /* Compact max width for aesthetics */
-  max-width: 260px !important;
+  /* Match lens card width */
+  min-width: 320px !important;
+  max-width: 380px !important;
 }
 
-/* Title inside legend */
-.legend-title {
-  font-size: 1.05rem !important;
-  font-weight: 650 !important;
-  color: #1e293b !important;
-  margin-bottom: 0.65rem !important;
-  letter-spacing: 0.01em !important;
-}
-
-/* Legend rows */
-.legend-row {
-  display: flex !important;
-  align-items: center !important;
-  margin-bottom: 0.55rem !important;
-}
-
-/* The colored box */
-.legend-color {
-  width: 20px !important;
-  height: 16px !important;
-  border-radius: 4px !important;
-  margin-right: 10px !important;
-  border: 1px solid rgba(0,0,0,0.15) !important;
-}
-
-/* Labels for each bucket */
-.legend-label {
-  font-size: 0.94rem !important;
-  font-weight: 500 !important;
-  color: #334155 !important;
-}
-
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* =============================
-   LEGEND HEADER BAR (MATCH LENS CARD)
-   ============================= */
-
+/* Legend header now wraps nicely onto two lines */
 .legend-header {
-  margin: -1rem -1.2rem 0.8rem;  /* extend to legend edges */
-  padding: 0.55rem 1.2rem;
+  margin: -1rem -1.2rem 0.8rem !important;
+  padding: 0.55rem 1.2rem !important;
 
-  border-radius: 14px 14px 10px 10px;
-  background: rgba(229, 231, 235, 0.96); /* default */
-  backdrop-filter: blur(14px);
+  border-radius: 14px 14px 10px 10px !important;
+  background: rgba(229, 231, 235, 0.96) !important;
+  backdrop-filter: blur(14px) !important;
 
-  border-bottom: 1px solid rgba(15, 23, 42, 0.16);
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.25);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.16) !important;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.25) !important;
 }
 
-/* Metric heading text inside the legend header */
+/* Legend heading text (metric) */
 .legend-header-title {
-  font-size: 0.9rem;
-  font-weight: 650;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #020617;
-  white-space: nowrap;        /* single line */
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 0.9rem !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: #020617 !important;
+
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+
+  line-height: 1.25 !important;
 }
 
-/* Per-lens gradients (align with lens card colors) */
+/* Per-lens gradient backgrounds */
 .legend-header-overview {
-  background: linear-gradient(
-    135deg,
-    rgba(254, 215, 170, 0.96),
-    rgba(249, 115, 22, 0.9)
-  );
+  background: linear-gradient(135deg, rgba(254,215,170,0.96), rgba(249,115,22,0.9)) !important;
 }
 
 .legend-header-per_capita {
-  background: linear-gradient(
-    135deg,
-    rgba(191, 219, 254, 0.96),
-    rgba(37, 99, 235, 0.9)
-  );
+  background: linear-gradient(135deg, rgba(191,219,254,0.96), rgba(37,99,235,0.9)) !important;
 }
 
 .legend-header-affordable_rental {
-  background: linear-gradient(
-    135deg,
-    rgba(221, 214, 254, 0.96),
-    rgba(139, 92, 246, 0.9)
-  );
+  background: linear-gradient(135deg, rgba(221,214,254,0.96), rgba(139,92,246,0.9)) !important;
 }
 
 .legend-header-rental_backlog {
-  background: linear-gradient(
-    135deg,
-    rgba(187, 247, 208, 0.96),
-    rgba(34, 197, 94, 0.9)
-  );
+  background: linear-gradient(135deg, rgba(187,247,208,0.96), rgba(34,197,94,0.9)) !important;
 }
 
 .legend-header-forsale_backlog {
-  background: linear-gradient(
-    135deg,
-    rgba(251, 207, 232, 0.96),
-    rgba(236, 72, 153, 0.9)
-  );
+  background: linear-gradient(135deg, rgba(251,207,232,0.96), rgba(236,72,153,0.9)) !important;
+}
+
+
+/* ==================================
+   COUNTY POPUPS – SMOOTHER LOOK
+   ================================== */
+
+.leaflet-popup-content-wrapper.custom-popup {
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+.leaflet-popup-tip.custom-popup {
+  background: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+.leaflet-popup-content {
+  margin: 10px 14px;
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #0f172a;
+}
+
+/* Optional: headings inside popup content, if you use <strong> or <h4> */
+.custom-popup h4 {
+  margin: 0 0 4px;
+  font-size: 0.98rem;
+  font-weight: 650;
+  color: #111827;
+}
+
+.custom-popup p {
+  margin: 2px 0;
 }
 

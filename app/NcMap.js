@@ -71,6 +71,19 @@ const LENS_CONFIG = {
   },
 };
 
+// Friendly explanations for each lens, used in hover tooltips
+const LENS_HELP_TEXT = {
+  overview:
+    "Shows how many total homes are missing in each county by 2029, combining both rental and for-sale units.",
+  per_capita:
+    "Shows how many homes are missing for every 1,000 people expected to live in the county in 2029.",
+  affordable_rental:
+    "Shows what share of the rental shortage is for lower-income renters (households making about half the area’s median income or less).",
+  rental_backlog:
+    "Compares the number of missing rental homes to the total number of rentals today. Higher values mean a bigger rental shortage relative to the current rental stock.",
+  forsale_backlog:
+    "Compares the number of missing for-sale homes to the total number of owned homes today. Higher values mean a bigger for-sale shortage relative to the current ownership stock.",
+};
 
 
 const LENS_ORDER = [
@@ -556,21 +569,31 @@ function LensSelector({ activeLensId, setActiveLensId }) {
             const isActive = id === activeLensId;
             return (
               <button
-                key={id}
-                type="button"
-                className={`lens-option${
-                  isActive ? " lens-option-active" : ""
-                }`}
-                onClick={() => setActiveLensId(id)}
-              >
-                <span
-                  className={`lens-dot lens-dot-${id}${
-                    isActive ? " lens-dot-active" : ""
-                  }`}
-                  aria-hidden="true"
-                />
-                <span className="lens-option-label">{cfg.shortLabel}</span>
-              </button>
+  key={id}
+  type="button"
+  className={`lens-option${isActive ? " lens-option-active" : ""}`}
+  onClick={() => setActiveLensId(id)}
+>
+  <span
+    className={`lens-dot lens-dot-${id}${
+      isActive ? " lens-dot-active" : ""
+    }`}
+    aria-hidden="true"
+  />
+  <span className="lens-option-main">
+    <span className="lens-option-label">{cfg.shortLabel}</span>
+    <span
+      className="lens-help-icon"
+      aria-label={`More info about ${cfg.shortLabel}`}
+    >
+      ?
+      <span className="lens-help-tooltip">
+        {LENS_HELP_TEXT[id]}
+      </span>
+    </span>
+  </span>
+</button>
+
             );
           })}
         </div>
