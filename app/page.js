@@ -29,49 +29,54 @@ export default function Home() {
         {/* Floating About card at bottom-left (positioned via .about-panel CSS) */}
         <section className="about-panel" aria-label="About this map">
           <div className="about-panel-header-row">
-            <h2 className="about-title">About this map</h2>
+  <h2 className="about-title">About this map</h2>
 
-            <button
-              type="button"
-              className="about-toggle"
-              onClick={() => setShowAbout((prev) => !prev)}
-            >
-              {showAbout ? "Hide details" : "Show details"}
-            </button>
-          </div>
+  <div className="about-panel-actions">
+    <button
+      type="button"
+      className="about-toggle"
+      onClick={() => setShowAbout((prev) => !prev)}
+    >
+      {showAbout ? "Hide details" : "Show details"}
+    </button>
+
+    <a
+      href="https://ncchamber.com/foundation/nc-housing-analysis/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="about-report-btn"
+    >
+      Read report
+    </a>
+  </div>
+</div>
+
 
           <div
-            className={
-              "about-panel-body" +
-              (showAbout ? "" : " about-panel-body-collapsed")
-            }
-          >
-            <p className="about-text">
-              This map was created by Brien Brennan, and inspired by HR&amp;A
-              Advisors&apos; housing scarcity dashboard for the Florida
-              Apartments Association.
-            </p>
+  className={
+    "about-panel-body" +
+    (showAbout ? "" : " about-panel-body-collapsed")
+  }
+>
+  <p className="about-text">
+    This map was created by Brien Brennan, and inspired by HR&amp;A
+    Advisors&apos; housing scarcity dashboard for the Florida Apartments
+    Association.
+  </p>
 
-            <p className="about-text">
-              It is the first-ever interactive, county-level map of North
-              Carolina&apos;s housing shortage, visualizing the state&apos;s
-              housing supply gap in 2029 based on data from Bowen National
-              Research. View different data using the heatmap selector tool, and
-              click on counties to see details about the shortage.
-            </p>
+  <p className="about-text">
+    It is the first-ever interactive, county-level map of North
+    Carolina&apos;s housing shortage, visualizing the state&apos;s
+    housing supply gap in 2029 based on data from Bowen National
+    Research.
+  </p>
 
-            <p className="about-text">
-              Read the{" "}
-              <a
-                href="https://ncchamber.com/foundation/nc-housing-analysis/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Bowen National Research report here
-              </a>
-              .
-            </p>
-          </div>
+  <p className="about-text">
+    Click on counties to see details about the shortage, and change data
+    with the heatmap tool.
+  </p>
+</div>
+
         </section>
 
         {/* Map occupies the main center area */}
