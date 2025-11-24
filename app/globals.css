@@ -650,16 +650,19 @@ body {
   cursor: default;
 }
 
-/* Tooltip bubble */
+/* Tooltip bubble: show to the LEFT of the "?" icon */
 .lens-help-tooltip {
   position: absolute;
-  right: 0;           /* anchor tooltip to the inside-right of the card */
+
+  /* position left of the icon so it never collides with the card's top edge */
+  right: 110%;
   left: auto;
-  bottom: 130%;
-  transform: translateY(0);  /* no horizontal shifting */
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
 
   min-width: 220px;
-  max-width: 260px;
+  max-width: min(260px, 80vw);
   padding: 8px 10px;
   border-radius: 8px;
   background: #0f172a;
@@ -671,26 +674,30 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 1200; /* keep it above the lens card + map */
 }
 
 
-/* Tooltip arrow */
+
+/* Tooltip arrow (small triangle pointing from tooltip to the "?") */
 .lens-help-tooltip::after {
   content: "";
   position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  right: -6px;
+  transform: translateY(-50%);
   border-width: 6px;
   border-style: solid;
-  border-color: #0f172a transparent transparent transparent;
+  border-color: transparent transparent transparent #0f172a;
 }
+
 
 /* Show tooltip on hover */
 .lens-help-icon:hover .lens-help-tooltip {
   opacity: 1;
-  transform: translateY(-2px);
+  transform: translateY(calc(-50% - 2px));
 }
+
 
 /* Hover: subtle slide and pill background */
 .lens-option:hover {
