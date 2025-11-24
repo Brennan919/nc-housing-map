@@ -264,6 +264,52 @@ function formatLegendValue(value, lensId) {
   return formatPercent(value);
 }
 
+// ---------- Statewide rankings for popup "state rank" lines ----------
+
+const STATE_RANKINGS = computeStateRankings(ncCounties.features || []);
+
+function computeStateRankings(features) {
+  if (!Array.isArray(features)) return {};
+
+  // Which metric defines "rank 1" for each lens
+  const metricByLens = {
+    overview: "housing_shortage",
+    per_capita: "shortage_per_1000_2029",
+    affordable_rental: "percent_rental_units_50_ami",
+    rental_backlog: "rental_gap_to_units_ratio",
+    forsale_backlog: "for_sale_gap_to_units_ratio",
+  };
+
+  const rankings = {};
+
+  Object.entries(metricByLens).forEach(([lensId, metricKey]) => {
+    const rows = (features || [])
+      .map((f) => {
+        const props = f.properties || {};
+        const fips =
+          props.fips != null
+            ? String(props.fips)
+            : props.GEOID || props.COUNTYFP || props.NAME;
+        const value = safeNumber(props[metricKey]);
+        return { fips, value };
+      })
+      .filter((row) => row.fips && Number.isFinite(row.value));
+
+    // Highest value gets rank #1
+    rows.sort((a, b) => b.value - a.value);
+
+    const map = {};
+    rows.forEach((row, index) => {
+      map[row.fips] = index + 1;
+    });
+
+    rankings[lensId] = map;
+  });
+
+  return rankings;
+}
+
+
 // ---------- Popup content builder ----------
 
 function buildPopupHTML(lensId, properties) {
@@ -271,6 +317,13 @@ function buildPopupHTML(lensId, properties) {
   const name = p.NAME || p.county || "Unknown County";
 
   const lines = [];
+
+  // Identify this county for ranking lookup
+  const fipsKey =
+    p.fips != null ? String(p.fips) : p.GEOID || p.COUNTYFP || p.NAME;
+  const rankMap = STATE_RANKINGS[lensId] || {};
+  const rankValue = fipsKey ? rankMap[fipsKey] : undefined;
+
 
   // 1) Housing Shortage Overview lens
   //    shows: pop2029, housing_shortage, housing_gap_rentals, housing_gap_for_sale
@@ -285,6 +338,15 @@ function buildPopupHTML(lensId, properties) {
     label: "2029 Total Housing Shortage (Units):",
     value: formatInt(shortage),
   });
+
+    if (rankValue) {
+    lines.push({
+      icon: "🏅",
+      label: "State rank:",
+      value: `#${rankValue} of 100 counties`,
+    });
+  }
+
   lines.push({
     icon: "🏢",
     label: "2029 Rental Housing Shortage (Units):",
@@ -315,6 +377,15 @@ function buildPopupHTML(lensId, properties) {
     label: "2029 Shortage per 1,000 People (Units):",
     value: formatPerThousand(per1000People),
   });
+
+    if (rankValue) {
+    lines.push({
+      icon: "🏅",
+      label: "State rank:",
+      value: `#${rankValue} of 100 counties`,
+    });
+  }
+
   lines.push({
     icon: "🏡",
     label: "2029 Shortage per 1,000 Households (Units):",
@@ -339,6 +410,15 @@ function buildPopupHTML(lensId, properties) {
     label: "Percentage of 2029 Rental Shortage Needed by Low-Income Households:",
     value: formatPercent(percent50AMI),
   });
+
+    if (rankValue) {
+    lines.push({
+      icon: "🏅",
+      label: "State rank:",
+      value: `#${rankValue} of 100 counties`,
+    });
+  }
+
   lines.push({
     icon: "🏢",
     label: "2029 Rental Housing Shortage (Units):",
@@ -358,6 +438,15 @@ function buildPopupHTML(lensId, properties) {
     label: "Rental Shortage as % of 2029 Rental Stock:",
     value: formatPercent(backlogPercent),
   });
+
+    if (rankValue) {
+    lines.push({
+      icon: "🏅",
+      label: "State rank:",
+      value: `#${rankValue} of 100 counties`,
+    });
+  }
+
   lines.push({
     icon: "🏢",
     label: "2029 Rental Housing Shortage (Units):",
@@ -377,6 +466,15 @@ function buildPopupHTML(lensId, properties) {
     label: "For-Sale Shortage as % of 2029 Owner-Occupied Housing Stock:",
     value: formatPercent(backlogPercent),
   });
+
+    if (rankValue) {
+    lines.push({
+      icon: "🏅",
+      label: "State rank:",
+      value: `#${rankValue} of 100 counties`,
+    });
+  }
+
   lines.push({
     icon: "🏠",
     label: "2029 For-Sale Housing Shortage (Units):",
