@@ -74,15 +74,19 @@ forsale_backlog: {
 // Friendly explanations for each lens, used in hover tooltips
 const LENS_HELP_TEXT = {
   overview:
-    "Shows how many total homes are missing in each county by 2029, combining both rental and for-sale units.",
+    "Shows the total housing shortage each county is projected to have in 2029, combining both rental and for-sale units.",
+
   per_capita:
-    "Shows how many homes are missing for every 1,000 people expected to live in the county in 2029.",
+    "Shows the housing shortage each county is projected to have in 2029, expressed as the number of missing homes per 1,000 residents.",
+
   affordable_rental:
-    "Shows what share of the rental shortage is for lower-income renters (households making about half the area’s median income or less).",
+    "Shows the share of each county’s 2029 rental housing shortage that will be needed by households earning 50% or less of the 2029 county AMI (area median income). These households are usually eligible for federal rental assistance.",
+
   rental_backlog:
-    "Compares the number of missing rental homes to the total number of rentals today. Higher values mean a bigger rental shortage relative to the current rental stock.",
+    "Shows each county’s 2029 rental housing shortage as a percentage of its 2029 total rental housing stock.",
+
   forsale_backlog:
-    "Compares the number of missing for-sale homes to the total number of owned homes today. Higher values mean a bigger for-sale shortage relative to the current ownership stock.",
+    "Shows each county’s 2029 for-sale housing shortage as a percentage of its 2029 total owner-occupied housing stock."
 };
 
 
@@ -177,7 +181,7 @@ function getMetricValue(feature, lensId) {
 // Pick a color from the right palette for each lens + class index 0–4
 function getPaletteColor(lensId, classIndex) {
   // Overview palette (slightly darker light color)
-  const overviewPalette = ["#fde092ff", "#ff852eff", "#dc0a0aff", "#8c0000ff", "#430400ff"];
+  const overviewPalette = ["#fde092ff", "#ff852eff", "#dd1313ff", "#8c0000ff", "#430400ff"];
 
   // Housing Shortage per Capita: blues
   const perCapitaPalette = ["#e7f2ffff", "#82b8ffff", "#1f78fdff", "#003cbfff", "#001c6aff"];
@@ -187,23 +191,23 @@ function getPaletteColor(lensId, classIndex) {
     "#e4dafbff",
     "#c395ffff",
     "#9943eaff",
-    "#5c15d7ff",
-    "#31027dff",
+    "#520ec8ff",
+    "#260063ff",
   ];
 
   // Rental Housing Backlog: greens
   const rentalBacklogPalette = [
     "#e4ffedff",
-    "#80eb95ff",
+    "#90e7a1ff",
     "#13c236ff",
     "#006c17ff",
-    "#00290eff",
+    "#00230cff",
   ];
 
   // For-Sale Housing Backlog: pink/red
   const forSaleBacklogPalette = [
     "#ffe8f5ff",
-    "#ff6bb8ff",
+    "#fc6fb8ff",
     "#e80878ff",
     "#980045ff",
     "#540034ff",

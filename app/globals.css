@@ -363,7 +363,12 @@ body {
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
+
+  /* Match "About this map" typography */
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
 }
+
 
 .footer-text a {
   color: var(--color-header-accent);

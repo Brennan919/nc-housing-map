@@ -88,14 +88,14 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Fixed footer with contact + copyright */}
+            {/* Fixed footer with contact + copyright */}
       <footer className="site-footer">
         <p className="footer-text">
           For questions or comments, email{" "}
           <a href="mailto:brien.brennan@gmail.com">
             brien.brennan@gmail.com
           </a>
-          .&nbsp;&copy; 2025 Brien Brennan.
+          .&nbsp;&copy; 2025 Brien Brennan
         </p>
       </footer>
     </div>
