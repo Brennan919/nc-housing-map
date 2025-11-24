@@ -197,7 +197,7 @@ function getPaletteColor(lensId, classIndex) {
 
   // Rental Housing Backlog: greens
   const rentalBacklogPalette = [
-    "#e4ffedff",
+    "#e0ffeaff",
     "#90e7a1ff",
     "#13c236ff",
     "#006c17ff",
