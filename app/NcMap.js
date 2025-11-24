@@ -483,37 +483,30 @@ function buildPopupHTML(lensId, properties) {
 }
 
 
-  const itemsHtml = lines
-  .map(
-    (line) => `
-      <div style="margin: 6px 0; display: flex; align-items: center;">
-        <span style="margin-right: 6px;">${line.icon}</span>
-        <span>${line.label}&nbsp;<strong>${line.value}</strong></span>
-      </div>`
-  )
-  .join("");
-
+    const itemsHtml = lines
+    .map(
+      (line) => `
+        <div class="county-popup-line">
+          <span class="county-popup-icon">${line.icon}</span>
+          <span class="county-popup-label">
+            ${line.label}&nbsp;<strong>${line.value}</strong>
+          </span>
+        </div>`
+    )
+    .join("");
 
   return `
-    <div style="
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      font-size: 13px;
-      color: #003366;
-      background: #f7f9fc;
-      border-radius: 12px;
-      padding: 14px 16px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-      border: 1px solid #cfd8dc;
-      min-width: 220px;
-    ">
-      <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px; color: #111;">
-        ${name} County
+    <div class="county-popup county-popup-${lensId}">
+      <div class="county-popup-header county-popup-header-${lensId}">
+        <span class="county-popup-title">${name} County</span>
       </div>
-      <hr style="border: none; border-top: 1px solid #eee; margin: 6px 0;">
-      ${itemsHtml}
+      <div class="county-popup-body">
+        ${itemsHtml}
+      </div>
     </div>
   `;
 }
+
 
 // ---------- Fit map to North Carolina bounds ----------
 
