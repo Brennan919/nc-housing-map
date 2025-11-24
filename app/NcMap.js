@@ -16,7 +16,7 @@ overview: {
   id: "overview",
   shortLabel: "Housing (Overview)",
   metricKey: "housing_shortage",
-  legendTitle: "2029 housing shortage (units)",
+    legendTitle: "2029 total housing shortage (units):",
   breaks: [4000, 10000, 16000, 34000],
 },
 
@@ -37,7 +37,7 @@ affordable_rental: {
   metricKey: "percent_rental_units_50_ami",
 
   // Legend header for this lens
-  legendTitle: "% of 2029 rental shortage needed by low-income households",
+    legendTitle: "Percentage of 2029 rental shortage needed by low-income households",
 
   // Optional multi-line version (not currently used, but kept for clarity)
   legendTitleLines: [
@@ -66,7 +66,7 @@ forsale_backlog: {
   id: "forsale_backlog",
   shortLabel: "For-Sale Housing",
   metricKey: "for_sale_gap_to_units_ratio",
-  legendTitle: "For-sale shortage as % of 2029 for-sale stock",
+    legendTitle: "For-sale shortage as % of 2029 owner-occupied housing stock",
   breaks: [10, 13, 16, 19],
 },
 };
@@ -280,26 +280,27 @@ function buildPopupHTML(lensId, properties) {
     const rentalsGap = numberOrZero(p.housing_gap_rentals);
     const forsaleGap = numberOrZero(p.housing_gap_for_sale);
 
-      lines.push({
-    icon: "🏠",
-    label: "Total housing shortage (units)",
+        lines.push({
+    icon: "🏘️",
+    label: "2029 Total Housing Shortage (Units):",
     value: formatInt(shortage),
   });
   lines.push({
-    icon: "📊",
-    label: "Rental housing shortage (units)",
+    icon: "🏢",
+    label: "2029 Rental Housing Shortage (Units):",
     value: formatInt(rentalsGap),
   });
   lines.push({
-    icon: "🏡",
-    label: "For-sale housing shortage (units)",
+    icon: "🏠",
+    label: "2029 For-Sale Housing Shortage (Units):",
     value: formatInt(forsaleGap),
   });
   lines.push({
     icon: "👥",
-    label: "2029 population",
+    label: "2029 Population:",
     value: formatInt(pop2029),
   });
+
 
 
   // 2) Housing Shortage per Capita lens
@@ -309,21 +310,22 @@ function buildPopupHTML(lensId, properties) {
     const per1000People = safeNumber(p.shortage_per_1000_2029);
     const per1000Households = safeNumber(p.shortage_per_1000_household_2029);
 
-      lines.push({
-    icon: "📊",
-    label: "Shortage per 1,000 people (2029)",
+        lines.push({
+    icon: "👤",
+    label: "2029 Shortage per 1,000 People (Units):",
     value: formatPerThousand(per1000People),
   });
   lines.push({
-    icon: "📉",
-    label: "Shortage per 1,000 households (2029)",
+    icon: "🏡",
+    label: "2029 Shortage per 1,000 Households (Units):",
     value: formatPerThousand(per1000Households),
   });
   lines.push({
     icon: "👥",
-    label: "2029 population",
+    label: "2029 Population:",
     value: formatInt(pop2029),
   });
+
 
 
   // 3) Affordable Rental Unit Shortage lens
@@ -334,62 +336,65 @@ function buildPopupHTML(lensId, properties) {
 
   lines.push({
     icon: "💡",
-    label: "Shortage of units affordable at ≤50% AMI (as % of rentals, 2029)",
+    label: "Percentage of 2029 Rental Shortage Needed by Low-Income Households:",
     value: formatPercent(percent50AMI),
   });
   lines.push({
-    icon: "🏘️",
-    label: "Rental housing shortage (units)",
+    icon: "🏢",
+    label: "2029 Rental Housing Shortage (Units):",
     value: formatInt(rentalsGap),
   });
+
 
 
   // 4) Rental Housing Backlog lens
   //    shows: rental_gap_to_units_ratio, housing_gap_rentals, percent_rental_units_50_ami
-  } else if (lensId === "rental_backlog") {
+ } else if (lensId === "rental_backlog") {
   const rentalsGap = numberOrZero(p.housing_gap_rentals);
   const backlogPercent = toPercent(p.rental_gap_to_units_ratio);
 
   lines.push({
-    icon: "📊",
-    label: "Rental shortage as % of all rental units (2029)",
+    icon: "🔑",
+    label: "Rental Shortage as % of 2029 Rental Stock:",
     value: formatPercent(backlogPercent),
   });
   lines.push({
-    icon: "🏘️",
-    label: "Rental housing shortage (units)",
+    icon: "🏢",
+    label: "2029 Rental Housing Shortage (Units):",
     value: formatInt(rentalsGap),
   });
+
 
 
   // 5) For-Sale Housing Backlog lens
   //    shows: for_sale_gap_to_units_ratio, housing_gap_for_sale
   } else if (lensId === "forsale_backlog") {
-    const forsaleGap = numberOrZero(p.housing_gap_for_sale);
-    const backlogPercent = toPercent(p.for_sale_gap_to_units_ratio);
+  const forsaleGap = numberOrZero(p.housing_gap_for_sale);
+  const backlogPercent = toPercent(p.for_sale_gap_to_units_ratio);
 
-      lines.push({
-    icon: "📊",
-    label: "For-sale shortage as % of for-sale stock (2029)",
+  lines.push({
+    icon: "🏷️",
+    label: "For-Sale Shortage as % of 2029 Owner-Occupied Housing Stock:",
     value: formatPercent(backlogPercent),
   });
   lines.push({
-    icon: "🏡",
-    label: "For-sale housing shortage (units)",
+    icon: "🏠",
+    label: "2029 For-Sale Housing Shortage (Units):",
     value: formatInt(forsaleGap),
   });
+}
 
-  }
 
   const itemsHtml = lines
-    .map(
-      (line) => `
+  .map(
+    (line) => `
       <div style="margin: 6px 0; display: flex; align-items: center;">
         <span style="margin-right: 6px;">${line.icon}</span>
-        <span>${line.label}:&nbsp;<strong>${line.value}</strong></span>
+        <span>${line.label}&nbsp;<strong>${line.value}</strong></span>
       </div>`
-    )
-    .join("");
+  )
+  .join("");
+
 
   return `
     <div style="
